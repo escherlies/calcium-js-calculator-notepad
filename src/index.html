@@ -165,9 +165,38 @@
       transition: background-color 0.3s ease, color 0.3s ease;
     }
 
+    /* Responsive x-margins for bigger screens */
+    @media (min-width: 1400px) {
+      body {
+        padding-left: 80px;
+        padding-right: 80px;
+      }
+    }
+
+    @media (min-width: 1600px) {
+      body {
+        padding-left: 120px;
+        padding-right: 120px;
+      }
+    }
+
+    @media (min-width: 1920px) {
+      body {
+        padding-left: 160px;
+        padding-right: 160px;
+      }
+    }
+
+    @media (min-width: 2560px) {
+      body {
+        padding-left: 240px;
+        padding-right: 240px;
+      }
+    }
+
     .main-container {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 2fr 1fr;
       gap: 32px;
       max-width: 100%;
       width: 100%;
@@ -193,7 +222,7 @@
       display: flex;
       flex-direction: column;
       min-width: 0;
-      overflow: visible;
+      overflow: hidden;
     }
 
     .examples-section {
@@ -220,6 +249,8 @@
       cursor: pointer;
       transition: all 0.2s ease;
       transform: translateY(0);
+      min-width: 0;
+      width: 100%;
     }
 
     .example-item:hover {
@@ -258,16 +289,18 @@
       font-family: 'SF Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
       font-size: 13px;
       line-height: 1.5;
-      white-space: pre;
+      white-space: pre-wrap;
       overflow-x: auto;
       overflow-y: hidden;
       max-height: 200px;
       word-wrap: break-word;
+      word-break: break-all;
       box-sizing: border-box;
       color: var(--text-secondary);
       background: var(--bg-code);
       transition: color 0.2s ease;
       border-radius: 0 0 8px 8px;
+      min-width: 0;
     }
 
     .cell {
@@ -1241,7 +1274,7 @@
             // Clear and recreate hints with updated positions
             const existingOverlays = editorContainer.querySelectorAll('.inline-hint-overlay');
             existingOverlays.forEach(overlay => overlay.remove());
-            
+
             // Re-run evaluation to recreate hints at correct positions
             // Only if there are existing hints to avoid unnecessary re-evaluation
             if (existingOverlays.length > 0) {
