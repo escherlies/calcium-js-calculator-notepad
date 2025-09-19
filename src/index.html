@@ -8,29 +8,29 @@
   <style>
     :root {
       /* Light theme variables */
-      --bg-primary: #f5f5f5;
-      --bg-secondary: white;
-      --bg-tertiary: #f8f9fa;
-      --bg-quaternary: #e9ecef;
-      --bg-code: #fafafa;
-      --bg-output: #eee;
-      --bg-about: #f9f9f9;
+      --bg-primary: #fafafa;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #fcfcfc;
+      --bg-quaternary: #f5f5f5;
+      --bg-code: #ffffff;
+      --bg-output: #f8f9fa;
+      --bg-about: #ffffff;
 
-      --text-primary: #333;
-      --text-secondary: #495057;
-      --text-tertiary: #555;
-      --text-muted: #666;
+      --text-primary: #2c3e50;
+      --text-secondary: #34495e;
+      --text-tertiary: #5a6c7d;
+      --text-muted: #7f8c8d;
 
-      --border-primary: #ddd;
-      --border-secondary: #e9ecef;
-      --border-tertiary: #dee2e6;
-      --border-quaternary: #eee;
+      --border-primary: #e8e9ea;
+      --border-secondary: #f1f2f3;
+      --border-tertiary: #ecf0f1;
+      --border-quaternary: #f4f5f6;
 
-      --accent-primary: #007acc;
-      --accent-hover: #005a9e;
-      --error-color: #d73a49;
+      --accent-primary: #3498db;
+      --accent-hover: #2980b9;
+      --error-color: #e74c3c;
 
-      --shadow: rgba(0, 0, 0, 0.1);
+      --shadow: rgba(0, 0, 0, 0.06);
       --monaco-theme: 'vs-light';
     }
 
@@ -65,23 +65,26 @@
     }
 
     body {
-      font-family: monospace;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', monospace;
       background: var(--bg-primary);
       background-image: url('noisy-texture-100x100-o4-d10-c-f34379-t1.png');
       background-repeat: repeat;
       background-size: 100px 100px;
+      background-blend-mode: multiply;
+      background-opacity: 0.3;
       color: var(--text-primary);
-      padding: 10px;
+      padding: 32px;
       margin: 0;
       box-sizing: border-box;
       overflow-x: auto;
+      line-height: 1.6;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .main-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 40px;
       max-width: 100%;
       width: 100%;
       box-sizing: border-box;
@@ -91,7 +94,7 @@
     @media (max-width: 1200px) {
       .main-container {
         grid-template-columns: 1fr;
-        gap: 15px;
+        gap: 32px;
       }
     }
 
@@ -110,79 +113,86 @@
     }
 
     .examples-section {
-      background: var(--bg-secondary);
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px var(--shadow);
-      margin-bottom: 20px;
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      padding: 0;
+      margin-bottom: 32px;
     }
 
     .examples-section h3 {
       margin-top: 0;
-      margin-bottom: 15px;
+      margin-bottom: 32px;
       color: var(--text-primary);
-      border-bottom: 1px solid var(--border-quaternary);
-      padding-bottom: 8px;
+      font-size: 1.5em;
+      font-weight: 600;
+      letter-spacing: -0.01em;
     }
 
     .example-item {
-      background: var(--bg-tertiary);
-      border: 1px solid var(--border-secondary);
-      border-radius: 6px;
-      margin-bottom: 15px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-primary);
+      border-radius: 12px;
+      margin-bottom: 24px;
       overflow: hidden;
-      transition: background-color 0.3s ease, border-color 0.3s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      transform: translateY(0);
+    }
+
+    .example-item:hover {
+      background: var(--bg-quaternary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-color: var(--border-secondary);
+    }
+
+    .example-item:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     }
 
     .example-header {
-      background: var(--bg-quaternary);
-      padding: 8px 12px;
-      font-weight: bold;
-      color: var(--text-secondary);
-      border-bottom: 1px solid var(--border-tertiary);
+      background: var(--bg-tertiary);
+      padding: 16px 20px;
+      font-weight: 500;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border-primary);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      transition: all 0.2s ease;
+    }
+
+    .example-header span {
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .example-code {
-      padding: 12px;
-      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      padding: 20px;
+      font-family: 'SF Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
       font-size: 13px;
-      line-height: 1.4;
+      line-height: 1.5;
       white-space: pre;
       overflow-x: auto;
-      overflow-y: auto;
-      max-height: 250px;
+      overflow-y: hidden;
+      max-height: 200px;
       word-wrap: break-word;
       box-sizing: border-box;
-      color: var(--text-primary);
-      transition: color 0.3s ease;
-    }
-
-    .load-example-btn {
-      background: var(--accent-primary);
-      color: white;
-      border: none;
-      padding: 4px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 12px;
-      transition: background-color 0.3s ease;
-    }
-
-    .load-example-btn:hover {
-      background: var(--accent-hover);
+      color: var(--text-secondary);
+      background: var(--bg-code);
+      transition: color 0.2s ease;
+      border-radius: 0 0 12px 12px;
     }
 
     .cell {
       background: var(--bg-secondary);
-      padding: 10px;
-      margin-bottom: 10px;
+      padding: 20px;
+      margin-bottom: 24px;
       border-radius: 8px;
-      box-shadow: 0 2px 5px var(--shadow);
+      box-shadow: 0 2px 8px var(--shadow);
+      border: 1px solid var(--border-secondary);
       transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
 
@@ -239,13 +249,15 @@
     }
 
     button {
-      margin-top: 5px;
-      padding: 5px 10px;
+      margin-top: 12px;
+      padding: 10px 16px;
       cursor: pointer;
       background: var(--bg-secondary);
       color: var(--text-primary);
       border: 1px solid var(--border-primary);
-      border-radius: 4px;
+      border-radius: 6px;
+      font-size: 14px;
+      line-height: 1.4;
       transition: all 0.3s ease;
     }
 
@@ -256,10 +268,11 @@
     .output {
       background: var(--bg-output);
       color: var(--text-primary);
-      padding: 5px;
-      border-radius: 4px;
-      margin: 5px 0 0;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin: 16px 0 0;
       white-space: pre-wrap;
+      line-height: 1.5;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
 
@@ -325,12 +338,14 @@
 
     .about-panel {
       display: none;
+      font-size: 13px;
       background: var(--bg-about);
       border: 1px solid var(--border-primary);
-      border-radius: 8px;
-      padding: 15px;
-      margin: 15px 0;
-      box-shadow: 0 2px 5px var(--shadow);
+      border-radius: 6px;
+      padding: 20px;
+      margin: 16px 0;
+      box-shadow: 0 2px 6px var(--shadow);
+      line-height: 1.6;
       transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
@@ -340,16 +355,19 @@
 
     .about-panel h3 {
       margin-top: 0;
+      margin-bottom: 20px;
       color: var(--text-primary);
+      font-weight: 500;
     }
 
     .about-panel ul {
-      margin: 10px 0;
-      padding-left: 20px;
+      margin: 16px 0;
+      padding-left: 24px;
     }
 
     .about-panel li {
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      line-height: 1.5;
     }
   </style>
 </head>
@@ -357,15 +375,17 @@
 <body>
   <div class="main-container">
     <div class="left-panel">
-      <h1>Calcium</h1>
-      <p>
+      <h1 style="margin-bottom: 24px; font-size: 2.5em; font-weight: 300; letter-spacing: -0.02em;">Calcium</h1>
+      <p style="margin-bottom: 8px; line-height: 1.7;">
         <strong>Proof of Concept of an Interactive JavaScript Line-by-Line Notebook</strong><br>
-        <small>Powered by Monaco Editor, the same editor that runs VS Code</small>
+        <small style="color: var(--text-muted); margin-top: 8px; display: inline-block;">Powered by Monaco Editor, the
+          same editor that runs VS Code</small>
         <button class="about-toggle" onclick="toggleAbout()">more</button>
       </p>
 
       <div id="about-panel" class="about-panel">
-        <p>Calcium is a powerful web-based JavaScript notebook that evaluates code line-by-line in real-time. Perfect
+        <p style="margin-bottom: 24px; font-size: 13px; color: var(--text-secondary);">Calcium is a powerful web-based
+          JavaScript notebook that evaluates code line-by-line in real-time. Perfect
           for
           learning, experimentation, and quick calculations.</p>
 
@@ -381,42 +401,39 @@
         </ul>
       </div>
 
-      <p><small><strong>Quick Start:</strong> Use Ctrl+S to run evaluation or click "Run" button<br>
-          <strong>Important:</strong> Do not use var, let, or const - assign variables directly to ensure they're bound
-          to
-          global context</small></p>
+      <p style="margin-bottom: 32px; color: var(--text-muted);">
+        <small style="line-height: 1.6;"><strong>Quick Start:</strong> Use Ctrl+S to run evaluation or click "Run"
+          button
+      </p>
 
       <!-- <div style="margin-bottom: 10px;">
         <button onclick="addCell()">+ Add Cell</button>
       </div> -->
 
-      <div id="notebook"></div>
+      <div id="notebook" style="margin-top: 32px;"></div>
     </div>
 
-    <div class="right-panel">
+    <div class="right-panel" style="margin-top: 0;">
       <div class="examples-section">
-        <h3>📚 Examples</h3>
+        <h3 style="font-size: 1.4em; font-weight: 500; margin-bottom: 28px;">📚 Examples</h3>
 
-        <div class="example-item">
+        <div class="example-item" onclick="loadExample('simple-math.js')">
           <div class="example-header">
             <span>🧮 Simple Math</span>
-            <button class="load-example-btn" onclick="loadExample('simple-math.js')">Load</button>
           </div>
           <div class="example-code" id="simple-math-example"></div>
         </div>
 
-        <div class="example-item">
+        <div class="example-item" onclick="loadExample('coffee-spending.js')">
           <div class="example-header">
             <span>☕ Coffee Spending</span>
-            <button class="load-example-btn" onclick="loadExample('coffee-spending.js')">Load</button>
           </div>
           <div class="example-code" id="coffee-example"></div>
         </div>
 
-        <div class="example-item">
+        <div class="example-item" onclick="loadExample('gin-basil-smash.js')">
           <div class="example-header">
             <span>🌿 Gin-Basil Smash</span>
-            <button class="load-example-btn" onclick="loadExample('gin-basil-smash.js')">Load</button>
           </div>
           <div class="example-code" id="gin-example"></div>
         </div>
