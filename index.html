@@ -176,6 +176,10 @@
 
           console.log('Running evaluation on', lines.length, 'lines');
 
+          let lastResult = null;
+          let lastLine = null;
+          let lastError = null;
+
           lines.forEach((line, index) => {
             if (line.trim() === "") return; // skip empty lines
             try {
@@ -190,14 +194,27 @@
               // Create overlay hint element
               createInlineHint(index + 1, ` ⟶ ${resultText}`, 'result');
 
-              output.textContent += line + "  ⟶  " + resultText + "\n";
+              // Store the last successful result
+              lastResult = resultText;
+              lastLine = line;
+              lastError = null;
             } catch (err) {
               // Create overlay hint element for error
               createInlineHint(index + 1, ` ⟶ Error: ${err.message}`, 'error');
 
-              output.textContent += line + "  ⟶  Error: " + err.message + "\n";
+              // Store the last error
+              lastError = err.message;
+              lastLine = line;
+              lastResult = null;
             }
           });
+
+          // Only show the last evaluation result in the output box
+          if (lastError) {
+            output.textContent = "Error: " + lastError;
+          } else if (lastResult !== null) {
+            output.textContent = lastResult;
+          }
         }
 
         // Function to create inline hint overlays
@@ -262,7 +279,7 @@
 
     // Initialize with a default cell
     require(["vs/editor/editor.main"], function () {
-      addCell('// Try some JavaScript code:\nlet x = 5;\nlet y = 10;\nx + y');
+      addCell('coffeePrice = 4.50 // Daily coffee price\ncroissantPrice = 2.75 // Daily croissant price\ntipPercent = 15 // Tip percentage\nsubtotal = coffeePrice + croissantPrice // Calculate subtotal\ntipAmount = subtotal * tipPercent / 100 // Calculate tip\ntotal = subtotal + tipAmount // Total daily bill\nweeklySpending = total * 5 // Weekly spending (5 days)\nmonthlySpending = weeklySpending * 4 // Monthly spending (4 weeks)');
     });
   </script>
 </body>
