@@ -57,8 +57,6 @@
 
               shellHook = ''
                 echo "Hello, nix shell"
-
-                miniserve --index index.html .
               '';
             }
           );
