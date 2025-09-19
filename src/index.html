@@ -168,7 +168,7 @@
     .main-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 40px;
+      gap: 32px;
       max-width: 100%;
       width: 100%;
       box-sizing: border-box;
@@ -178,7 +178,7 @@
     @media (max-width: 1200px) {
       .main-container {
         grid-template-columns: 1fr;
-        gap: 32px;
+        gap: 24px;
       }
     }
 
@@ -198,12 +198,12 @@
 
     .examples-section {
       padding: 0;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
     }
 
     .examples-section h3 {
       margin-top: 0;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
       color: var(--text-primary);
       font-size: 1.5em;
       font-weight: 600;
@@ -213,7 +213,7 @@
     .example-item {
       background: var(--bg-secondary);
       border: 1px solid var(--border-primary);
-      border-radius: 12px;
+      border-radius: 8px;
       margin-bottom: 24px;
       overflow: hidden;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -236,7 +236,7 @@
 
     .example-header {
       background: var(--bg-tertiary);
-      padding: 16px 20px;
+      padding: 16px;
       font-weight: 500;
       color: var(--text-primary);
       border-bottom: 1px solid var(--border-primary);
@@ -254,7 +254,7 @@
     }
 
     .example-code {
-      padding: 20px;
+      padding: 16px;
       font-family: 'SF Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
       font-size: 13px;
       line-height: 1.5;
@@ -267,7 +267,7 @@
       color: var(--text-secondary);
       background: var(--bg-code);
       transition: color 0.2s ease;
-      border-radius: 0 0 12px 12px;
+      border-radius: 0 0 8px 8px;
     }
 
     .cell {
@@ -278,7 +278,7 @@
       width: 100%;
       min-height: 100px;
       border: 1px solid var(--border-primary);
-      border-radius: 4px;
+      border-radius: 8px;
       overflow: hidden;
       position: relative;
       box-sizing: border-box;
@@ -289,7 +289,7 @@
       width: 100%;
       height: 300px;
       border: 1px solid var(--border-primary);
-      border-radius: 4px;
+      border-radius: 8px;
       background: var(--bg-code);
       display: flex;
       align-items: center;
@@ -327,13 +327,13 @@
     }
 
     button {
-      margin-top: 12px;
-      padding: 10px 16px;
+      margin-top: 16px;
+      padding: 12px 16px;
       cursor: pointer;
       background: var(--bg-secondary);
       color: var(--text-primary);
       border: 1px solid var(--border-primary);
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 14px;
       line-height: 1.4;
       transition: all 0.3s ease;
@@ -346,8 +346,8 @@
     .output {
       background: var(--bg-output);
       color: var(--text-primary);
-      padding: 12px 16px;
-      border-radius: 6px;
+      padding: 16px;
+      border-radius: 8px;
       margin: 16px 0 0;
       white-space: pre-wrap;
       line-height: 1.5;
@@ -356,7 +356,7 @@
 
     .line-result {
       color: var(--text-tertiary);
-      margin-left: 10px;
+      margin-left: 8px;
     }
 
     .monaco-editor .line-result-hint {
@@ -387,7 +387,7 @@
       color: var(--accent-primary);
       font-style: italic;
       opacity: 0.8;
-      margin-left: 10px;
+      margin-left: 8px;
     }
 
     .monaco-editor .line-error-hint::after {
@@ -395,7 +395,7 @@
       color: var(--error-color);
       font-style: italic;
       opacity: 0.8;
-      margin-left: 10px;
+      margin-left: 8px;
     }
 
     .about-toggle {
@@ -406,7 +406,7 @@
       font-size: 12px;
       text-decoration: underline;
       padding: 0;
-      margin-left: 5px;
+      margin-left: 8px;
       transition: color 0.3s ease;
     }
 
@@ -419,8 +419,8 @@
       font-size: 13px;
       background: var(--bg-about);
       border: 1px solid var(--border-primary);
-      border-radius: 6px;
-      padding: 20px;
+      border-radius: 8px;
+      padding: 16px;
       margin: 16px 0;
       box-shadow: 0 2px 6px var(--shadow);
       line-height: 1.6;
@@ -433,7 +433,7 @@
 
     .about-panel h3 {
       margin-top: 0;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       color: var(--text-primary);
       font-weight: 500;
     }
@@ -485,7 +485,7 @@
       bottom: 0;
       opacity: 0;
       transition: opacity 0.2s ease;
-      border-radius: 7px;
+      border-radius: 8px;
     }
 
     .theme-button:hover {
@@ -612,7 +612,7 @@
       .theme-button {
         width: 32px;
         height: 32px;
-        border-radius: 6px;
+        border-radius: 8px;
       }
 
       .theme-button .theme-dot {
@@ -680,12 +680,12 @@
         <button onclick="addCell()">+ Add Cell</button>
       </div> -->
 
-      <div id="notebook" style="margin-top: 32px;"></div>
+      <div id="notebook" style="margin-top: 24px;"></div>
     </div>
 
     <div class="right-panel" style="margin-top: 0;">
       <div class="examples-section">
-        <h3 style="font-size: 1.4em; font-weight: 500; margin-bottom: 28px;">📚 Examples</h3>
+        <h3 style="font-size: 1.4em; font-weight: 500; margin-bottom: 24px;">📚 Examples</h3>
 
         <div class="example-item" onclick="loadExample('simple-math.js')">
           <div class="example-header">
@@ -1044,7 +1044,7 @@
           wordWrap: 'off',
           overviewRulerLanes: 0,
           padding: {
-            top: 30,
+            top: 24,
             bottom: 0
           }
         });
@@ -1076,9 +1076,9 @@
         function resizeEditorToFitContent() {
           const lineCount = editor.getModel().getLineCount();
           const lineHeight = editor.getOption(monaco.editor.EditorOption.lineHeight);
-          const padding = 10; // Add some padding
-          const topSpace = 30; // Extra space at top
-          const bottomSpace = 20; // Extra space at bottom for horizontal scrollbar
+          const padding = 8; // Add some padding
+          const topSpace = 24; // Extra space at top
+          const bottomSpace = 16; // Extra space at bottom for horizontal scrollbar
           const newHeight = Math.max(100, lineCount * lineHeight + padding + topSpace + bottomSpace);
 
           editorContainer.style.height = newHeight + 'px';
@@ -1193,8 +1193,8 @@
 
           // Calculate approximate position
           const charWidth = fontSize * 0.6; // Approximate character width
-          const leftOffset = lineLength * charWidth + 60 + (2 * charWidth); // Add some padding + 2 characters indent
-          const topOffset = (lineNumber - 1) * lineHeight + 3;
+          const leftOffset = lineLength * charWidth + 56 + (2 * charWidth); // Add some padding + 2 characters indent
+          const topOffset = (lineNumber - 1) * lineHeight + 4;
 
           // Create hint element
           const hintElement = document.createElement('div');
