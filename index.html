@@ -243,8 +243,8 @@
 
         runButton.onclick = runEvaluation;
 
-        // Add Ctrl+Enter keyboard shortcut
-        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, function () {
+        // Add Ctrl+Shift+S keyboard shortcut
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyS, function () {
           runEvaluation();
         });
 
