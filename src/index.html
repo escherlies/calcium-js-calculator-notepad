@@ -586,7 +586,8 @@
           const lineCount = editor.getModel().getLineCount();
           const lineHeight = editor.getOption(monaco.editor.EditorOption.lineHeight);
           const padding = 10; // Add some padding
-          const newHeight = Math.max(100, lineCount * lineHeight + padding);
+          const bottomSpace = 20; // Extra space at bottom for horizontal scrollbar
+          const newHeight = Math.max(100, lineCount * lineHeight + padding + bottomSpace);
 
           editorContainer.style.height = newHeight + 'px';
           editor.layout();
