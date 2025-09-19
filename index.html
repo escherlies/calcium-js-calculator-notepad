@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- Keyboard shortcut: Ctrl+Shift+S to run evaluation -->
 <html lang="en">
 
 <head>
@@ -10,7 +9,103 @@
     body {
       font-family: monospace;
       background: #f5f5f5;
-      padding: 20px;
+      padding: 10px;
+      margin: 0;
+      box-sizing: border-box;
+      overflow-x: auto;
+    }
+
+    .main-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 100%;
+      width: 100%;
+      box-sizing: border-box;
+      overflow: visible;
+    }
+
+    @media (max-width: 1200px) {
+      .main-container {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+    }
+
+    .left-panel {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      overflow: visible;
+    }
+
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      overflow: visible;
+    }
+
+    .examples-section {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .examples-section h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      color: #333;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+    }
+
+    .example-item {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+
+    .example-header {
+      background: #e9ecef;
+      padding: 8px 12px;
+      font-weight: bold;
+      color: #495057;
+      border-bottom: 1px solid #dee2e6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .example-code {
+      padding: 12px;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 13px;
+      line-height: 1.4;
+      white-space: pre;
+      overflow-x: auto;
+      overflow-y: auto;
+      max-height: 250px;
+      word-wrap: break-word;
+      box-sizing: border-box;
+    }
+
+    .load-example-btn {
+      background: #007acc;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .load-example-btn:hover {
+      background: #005a9e;
     }
 
     .cell {
@@ -23,11 +118,12 @@
 
     .monaco-editor-container {
       width: 100%;
-      height: 300px;
+      min-height: 100px;
       border: 1px solid #ddd;
       border-radius: 4px;
       overflow: hidden;
       position: relative;
+      box-sizing: border-box;
     }
 
     .monaco-loading-placeholder {
@@ -174,206 +270,337 @@
 </head>
 
 <body>
+  <div class="main-container">
+    <div class="left-panel">
+      <h1>Calcium</h1>
+      <p>
+        <strong>Proof of Concept of an Interactive JavaScript Line-by-Line Notebook</strong><br>
+        <small>Powered by Monaco Editor, the same editor that runs VS Code</small>
+        <button class="about-toggle" onclick="toggleAbout()">more</button>
+      </p>
 
-  <h1>Calcium</h1>
-  <p>
-    <strong>Proof of Concept of an Interactive JavaScript Line-by-Line Notebook</strong><br>
-    <small>Powered by Monaco Editor, the same editor that runs VS Code</small>
-    <button class="about-toggle" onclick="toggleAbout()">more</button>
-  </p>
+      <div id="about-panel" class="about-panel">
+        <p>Calcium is a powerful web-based JavaScript notebook that evaluates code line-by-line in real-time. Perfect
+          for
+          learning, experimentation, and quick calculations.</p>
 
-  <div id="about-panel" class="about-panel">
-    <p>Calcium is a powerful web-based JavaScript notebook that evaluates code line-by-line in real-time. Perfect for
-      learning, experimentation, and quick calculations.</p>
+        <h3>Features:</h3>
+        <ul>
+          <li><strong>Line-by-Line Evaluation:</strong> See the result of each line of code instantly</li>
+          <li><strong>Inline Results:</strong> Results appear directly next to your code for immediate feedback</li>
+          <li><strong>Monaco Editor:</strong> Full-featured code editor with syntax highlighting and IntelliSense</li>
+          <li><strong>Multiple Cells:</strong> Organize your code into separate, executable cells</li>
+          <li><strong>Keyboard Shortcuts:</strong> Use Ctrl+S to quickly run evaluations</li>
+          <li><strong>Error Handling:</strong> Clear error messages displayed inline when code fails</li>
+          <li><strong>Real-time Feedback:</strong> Instant visual feedback as you type and modify code</li>
+        </ul>
+      </div>
 
-    <h3>Features:</h3>
-    <ul>
-      <li><strong>Line-by-Line Evaluation:</strong> See the result of each line of code instantly</li>
-      <li><strong>Inline Results:</strong> Results appear directly next to your code for immediate feedback</li>
-      <li><strong>Monaco Editor:</strong> Full-featured code editor with syntax highlighting and IntelliSense</li>
-      <li><strong>Multiple Cells:</strong> Organize your code into separate, executable cells</li>
-      <li><strong>Keyboard Shortcuts:</strong> Use Ctrl+Shift+S to quickly run evaluations</li>
-      <li><strong>Error Handling:</strong> Clear error messages displayed inline when code fails</li>
-      <li><strong>Real-time Feedback:</strong> Instant visual feedback as you type and modify code</li>
-    </ul>
+      <p><small><strong>Quick Start:</strong> Use Ctrl+S to run evaluation or click "Run" button<br>
+          <strong>Important:</strong> Do not use var, let, or const - assign variables directly to ensure they're bound
+          to
+          global context</small></p>
+
+      <!-- <div style="margin-bottom: 10px;">
+        <button onclick="addCell()">+ Add Cell</button>
+      </div> -->
+
+      <div id="notebook"></div>
+    </div>
+
+    <div class="right-panel">
+      <div class="examples-section">
+        <h3>📚 Examples</h3>
+
+        <div class="example-item">
+          <div class="example-header">
+            <span>🧮 Simple Math</span>
+            <button class="load-example-btn" onclick="loadExample('simple-math.js')">Load</button>
+          </div>
+          <div class="example-code" id="simple-math-example"></div>
+        </div>
+
+        <div class="example-item">
+          <div class="example-header">
+            <span>☕ Coffee Spending</span>
+            <button class="load-example-btn" onclick="loadExample('coffee-spending.js')">Load</button>
+          </div>
+          <div class="example-code" id="coffee-example"></div>
+        </div>
+
+        <div class="example-item">
+          <div class="example-header">
+            <span>🌿 Gin-Basil Smash</span>
+            <button class="load-example-btn" onclick="loadExample('gin-basil-smash.js')">Load</button>
+          </div>
+          <div class="example-code" id="gin-example"></div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <p><small><strong>Quick Start:</strong> Use Ctrl+Shift+S to run evaluation or click "Run" button<br>
-      <strong>Important:</strong> Do not use var, let, or const - assign variables directly to ensure they're bound to
-      global context<br>
-      <div id="notebook"></div>
-      <button onclick="addCell()">+ Add Cell</button>
+  <!-- Monaco Editor -->
+  <script type="text/javascript" src="https://unpkg.com/monaco-editor@0.52.0/min/vs/loader.js"></script>
+  <script>
+    require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.52.0/min/vs' } });
 
-      <!-- Monaco Editor -->
-      <script type="text/javascript" src="https://unpkg.com/monaco-editor@0.52.0/min/vs/loader.js"></script>
-      <script>
-        require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.52.0/min/vs' } });
-
-        // Before loading vs/editor/editor.main, define a global MonacoEnvironment that overwrites
-        // the default worker url location (used when creating WebWorkers). The problem here is that
-        // HTML5 does not allow cross-domain web workers, so we need to proxy the instantiation of
-        // a web worker through a same-domain script
-        window.MonacoEnvironment = {
-          getWorkerUrl: function (workerId, label) {
-            return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+    // Before loading vs/editor/editor.main, define a global MonacoEnvironment that overwrites
+    // the default worker url location (used when creating WebWorkers). The problem here is that
+    // HTML5 does not allow cross-domain web workers, so we need to proxy the instantiation of
+    // a web worker through a same-domain script
+    window.MonacoEnvironment = {
+      getWorkerUrl: function (workerId, label) {
+        return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
           self.MonacoEnvironment = {
             baseUrl: 'https://unpkg.com/monaco-editor@0.52.0/min/'
           };
           importScripts('https://unpkg.com/monaco-editor@0.52.0/min/vs/base/worker/workerMain.js');`
-            )}`;
-          }
-        };
+        )}`;
+      }
+    };
 
-        let cellCounter = 0;
+    let cellCounter = 0;
+    let editors = []; // Track all editors
 
-        function toggleAbout() {
-          const panel = document.getElementById('about-panel');
-          const button = document.querySelector('.about-toggle');
+    function toggleAbout() {
+      const panel = document.getElementById('about-panel');
+      const button = document.querySelector('.about-toggle');
 
-          if (panel.classList.contains('show')) {
-            panel.classList.remove('show');
-            button.textContent = 'more';
-          } else {
-            panel.classList.add('show');
-            button.textContent = 'less';
-          }
-        }
+      if (panel.classList.contains('show')) {
+        panel.classList.remove('show');
+        button.textContent = 'more';
+      } else {
+        panel.classList.add('show');
+        button.textContent = 'less';
+      }
+    }
 
-        function addCell(code = '') {
-          const notebook = document.getElementById("notebook");
-          const cell = document.createElement("div");
-          cell.className = "cell";
+    function addCell(code = '') {
+      const notebook = document.getElementById("notebook");
+      const cell = document.createElement("div");
+      cell.className = "cell";
 
-          // Create loading placeholder
-          const loadingPlaceholder = document.createElement("div");
-          loadingPlaceholder.className = "monaco-loading-placeholder";
-          loadingPlaceholder.innerHTML = `
+      // Create loading placeholder
+      const loadingPlaceholder = document.createElement("div");
+      loadingPlaceholder.className = "monaco-loading-placeholder";
+      loadingPlaceholder.innerHTML = `
             <div class="monaco-loading-spinner"></div>
             <div class="monaco-loading-text">Loading Editor...</div>
           `;
 
-          // Create Monaco editor container (initially hidden)
-          const editorContainer = document.createElement("div");
-          editorContainer.className = "monaco-editor-container";
-          editorContainer.id = `monaco-editor-${cellCounter++}`;
-          editorContainer.style.display = "none";
+      // Create Monaco editor container (initially hidden)
+      const editorContainer = document.createElement("div");
+      editorContainer.className = "monaco-editor-container";
+      editorContainer.id = `monaco-editor-${cellCounter++}`;
+      editorContainer.style.display = "none";
 
-          const runButton = document.createElement("button");
-          runButton.textContent = "Run";
-          runButton.disabled = true; // Disable until editor is ready
+      const runButton = document.createElement("button");
+      runButton.textContent = "Run";
+      runButton.disabled = true; // Disable until editor is ready
 
-          const output = document.createElement("pre");
-          output.className = "output";
+      const output = document.createElement("pre");
+      output.className = "output";
 
-          // Create Monaco editor
-          require(["vs/editor/editor.main"], function () {
-            // Hide loading placeholder and show editor container
-            loadingPlaceholder.style.display = "none";
-            editorContainer.style.display = "block";
-            runButton.disabled = false;
-            const editor = monaco.editor.create(editorContainer, {
-              value: code,
-              language: 'javascript',
-              theme: 'vs-light',
-              minimap: { enabled: false },
-              scrollBeyondLastLine: false,
-              automaticLayout: true,
-              fontSize: 14,
-              lineNumbers: 'on',
-              roundedSelection: false,
-              scrollbar: {
-                vertical: 'auto',
-                horizontal: 'auto'
-              },
-              wordWrap: 'off'
-            });
+      // Create Monaco editor
+      require(["vs/editor/editor.main"], function () {
+        // Hide loading placeholder and show editor container
+        loadingPlaceholder.style.display = "none";
+        editorContainer.style.display = "block";
+        runButton.disabled = false;
+        const editor = monaco.editor.create(editorContainer, {
+          value: code,
+          language: 'javascript',
+          theme: 'vs-light',
+          minimap: { enabled: false },
+          scrollBeyondLastLine: false,
+          automaticLayout: true,
+          fontSize: 14,
+          lineNumbers: 'on',
+          roundedSelection: false,
+          scrollbar: {
+            vertical: 'hidden',
+            horizontal: 'auto',
+            alwaysConsumeMouseWheel: false,
+            verticalScrollbarSize: 0,
+            verticalSliderSize: 0
+          },
+          wordWrap: 'off',
+          overviewRulerLanes: 0,
+          disableLayerHinting: true,
+          scrollbar: {
+            vertical: 'hidden',
+            horizontal: 'auto',
+            alwaysConsumeMouseWheel: false,
+            verticalScrollbarSize: 0,
+            verticalSliderSize: 0,
+            handleMouseWheel: false
+          }
+        });
 
-            let currentDecorations = [];
+        // Completely disable vertical scrolling in Monaco
+        editor.updateOptions({
+          scrollbar: {
+            vertical: 'hidden',
+            horizontal: 'auto',
+            alwaysConsumeMouseWheel: false,
+            verticalScrollbarSize: 0,
+            verticalSliderSize: 0,
+            handleMouseWheel: false
+          }
+        });
 
-            // Function to clear all inline hints
-            function clearInlineHints() {
-              currentDecorations = editor.deltaDecorations(currentDecorations, []);
-            }
+        // Completely prevent Monaco from handling mouse wheel events
+        editorContainer.addEventListener('wheel', function (e) {
+          // Prevent Monaco from processing this event at all
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          // Manually scroll the page
+          window.scrollBy(0, e.deltaY);
+        }, { passive: false, capture: true });
 
-            // Function to run evaluation and show inline hints
-            function runEvaluation() {
-              output.textContent = ""; // reset output
-              const code = editor.getValue();
-              const lines = code.split("\n");
+        // Also disable scrolling on the Monaco editor DOM element itself
+        const monacoEditorElement = editorContainer.querySelector('.monaco-editor');
+        if (monacoEditorElement) {
+          monacoEditorElement.addEventListener('wheel', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            window.scrollBy(0, e.deltaY);
+          }, { passive: false, capture: true });
+        }
 
-              // Clear previous decorations properly
-              clearInlineHints();
+        // Function to resize editor to fit content
+        function resizeEditorToFitContent() {
+          const lineCount = editor.getModel().getLineCount();
+          const lineHeight = editor.getOption(monaco.editor.EditorOption.lineHeight);
+          const padding = 10; // Add some padding
+          const newHeight = Math.max(100, lineCount * lineHeight + padding);
 
-              // Clear any existing overlay hints
-              const existingOverlays = editorContainer.querySelectorAll('.inline-hint-overlay');
-              existingOverlays.forEach(overlay => overlay.remove());
+          editorContainer.style.height = newHeight + 'px';
+          editor.layout();
+        }
 
-              console.log('Running evaluation on', lines.length, 'lines');
+        // Initial resize
+        resizeEditorToFitContent();
 
-              let lastResult = null;
-              let lastLine = null;
-              let lastError = null;
+        // Store editor reference
+        editors.push(editor);
 
-              lines.forEach((line, index) => {
-                if (line.trim() === "") return; // skip empty lines
-                try {
-                  // Create a clean evaluation context
-                  let result = (function () {
-                    return eval(line);
-                  })();
+        let currentDecorations = [];
 
-                  // Handle undefined results properly
-                  const resultText = result === undefined ? '' : String(result);
+        // Function to clear all inline hints
+        function clearInlineHints() {
+          currentDecorations = editor.deltaDecorations(currentDecorations, []);
+        }
 
-                  // Create overlay hint element
-                  createInlineHint(index + 1, ` ⟶ ${resultText}`, 'result');
+        // Function to run evaluation and show inline hints
+        function runEvaluation() {
+          output.textContent = ""; // reset output
+          const code = editor.getValue();
+          const lines = code.split("\n");
 
-                  // Store the last successful result
-                  lastResult = resultText;
-                  lastLine = line;
-                  lastError = null;
-                } catch (err) {
-                  // Create overlay hint element for error
-                  createInlineHint(index + 1, ` ⟶ Error: ${err.message}`, 'error');
+          // Clear previous decorations properly
+          clearInlineHints();
 
-                  // Store the last error
-                  lastError = err.message;
-                  lastLine = line;
-                  lastResult = null;
-                }
-              });
+          // Clear any existing overlay hints
+          const existingOverlays = editorContainer.querySelectorAll('.inline-hint-overlay');
+          existingOverlays.forEach(overlay => overlay.remove());
 
-              // Only show the last evaluation result in the output box
-              if (lastError) {
-                output.textContent = "Error: " + lastError;
-              } else if (lastResult !== null) {
-                output.textContent = lastResult;
+          console.log('Running evaluation on', lines.length, 'lines');
+
+          let lastResult = null;
+          let lastLine = null;
+          let lastError = null;
+          let lastVarToEval = undefined;
+
+          lines.forEach((line, index) => {
+            if (line.trim() === "") return; // skip empty lines
+
+            let varToEval = (() => {
+              const regex = /^\s*(?:const|let|var)?\s*([a-zA-Z_$][\w$]*)/gm;
+
+              const matches = [];
+              let m;
+              while ((m = regex.exec(line)) !== null) {
+                matches.push(m[1]);
               }
+
+              return matches[0]
+            })()
+
+            // Always evaluate the last statement wholly
+            // if (lines.length - 1 === index) {
+            //   varToEval = ";" + line
+            // }
+
+            try {
+              // Create a clean evaluation context
+              let result = (function () {
+                // Evaluate the whole code on the last line
+                if (lines.length - 1 === index) {
+                  return eval(lines.join(";"));
+                } else {
+                  const lineWithContext = code + `;\neval(\`${varToEval}\`)`
+                  return eval(lineWithContext);
+                }
+              })();
+
+              // Handle undefined results properly
+              // const resultText = result === undefined ? 'undefined' : String(result);
+
+              // Create overlay hint element
+              result && createInlineHint(index + 1, ` ⟶ ${String(result)}`, 'result');
+
+              // Store the last successful result
+              lastResult = result ? String(result) : lastResult
+              console.log("lastResult", lastResult)
+              lastLine = line;
+              lastError = null;
+            } catch (err) {
+              console.error(err)
+              // TODO: Create overlay hint element for error
+              // Since we eval the whole document, every line would currently show the same error
+              // createInlineHint(index + 1, ` ⟶ Error: ${err.message}`, 'error');
+
+              // Store the last error
+              lastError = err.message;
+              lastLine = line;
+              // lastResult = null;
             }
+          });
 
-            // Function to create inline hint overlays
-            function createInlineHint(lineNumber, text, type) {
-              const lineHeight = editor.getOption(monaco.editor.EditorOption.lineHeight);
-              const fontSize = editor.getOption(monaco.editor.EditorOption.fontSize);
+          // Only show the last evaluation result in the output box
+          if (lastError) {
+            output.textContent = "Error: " + lastError;
+          } else if (lastResult !== null) {
+            output.textContent = lastResult;
+          }
+        }
 
-              // Get the line content to calculate position
-              const lineContent = editor.getModel().getLineContent(lineNumber);
-              const lineLength = lineContent.length;
+        // Function to create inline hint overlays
+        function createInlineHint(lineNumber, text, type) {
+          const lineHeight = editor.getOption(monaco.editor.EditorOption.lineHeight);
+          const fontSize = editor.getOption(monaco.editor.EditorOption.fontSize);
 
-              // Calculate approximate position
-              const charWidth = fontSize * 0.6; // Approximate character width
-              const leftOffset = lineLength * charWidth + 60 + (2 * charWidth); // Add some padding + 2 characters indent
-              const topOffset = (lineNumber - 1) * lineHeight + 3;
+          // Get the line content to calculate position
+          const lineContent = editor.getModel().getLineContent(lineNumber);
+          const lineLength = lineContent.length;
 
-              // Create hint element
-              const hintElement = document.createElement('div');
-              hintElement.className = `inline-hint-overlay inline-hint-${type}`;
-              hintElement.textContent = text;
-              hintElement.style.cssText = `
+          // Calculate approximate position
+          const charWidth = fontSize * 0.6; // Approximate character width
+          const leftOffset = lineLength * charWidth + 60 + (2 * charWidth); // Add some padding + 2 characters indent
+          const topOffset = (lineNumber - 1) * lineHeight + 3;
+
+          // Create hint element
+          const hintElement = document.createElement('div');
+          hintElement.className = `inline-hint-overlay inline-hint-${type}`;
+          hintElement.textContent = text;
+          hintElement.style.cssText = `
             position: absolute;
             left: ${leftOffset}px;
             top: ${topOffset}px;
-            color: ${type === 'error' ? '#d73a49' : '#007acc'};
+            color: ${type === 'error' ? '#d73a49' : '#505050'};
             font-style: italic;
             opacity: 0.8;
             font-size: ${fontSize}px;
@@ -383,38 +610,112 @@
             white-space: nowrap;
           `;
 
-              editorContainer.appendChild(hintElement);
-            }
-
-            // Clear hints when content changes
-            editor.onDidChangeModelContent(() => {
-              clearInlineHints();
-              // Also clear overlay hints
-              const existingOverlays = editorContainer.querySelectorAll('.inline-hint-overlay');
-              existingOverlays.forEach(overlay => overlay.remove());
-            });
-
-            runButton.onclick = runEvaluation;
-
-            // Add Ctrl+Shift+S keyboard shortcut
-            editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyS, function () {
-              runEvaluation();
-            });
-
-            // Focus the editor
-            setTimeout(() => editor.focus(), 100);
-          });
-
-          cell.appendChild(loadingPlaceholder);
-          cell.appendChild(editorContainer);
-          cell.appendChild(runButton);
-          cell.appendChild(output);
-          notebook.appendChild(cell);
+          editorContainer.appendChild(hintElement);
         }
 
-        // Initialize with a default cell
-        addCell('coffeePrice = 4.50 // Daily coffee price\ncroissantPrice = 2.75 // Daily croissant price\ntipPercent = 15 // Tip percentage\nsubtotal = coffeePrice + croissantPrice // Calculate subtotal\ntipAmount = subtotal * tipPercent / 100 // Calculate tip\ntotal = subtotal + tipAmount // Total daily bill\nweeklySpending = total * 5 // Weekly spending (5 days)\nmonthlySpending = weeklySpending * 4 // Monthly spending (4 weeks)');
-      </script>
+        // Clear hints when content changes and resize editor
+        editor.onDidChangeModelContent(() => {
+          clearInlineHints();
+          // Also clear overlay hints
+          const existingOverlays = editorContainer.querySelectorAll('.inline-hint-overlay');
+          existingOverlays.forEach(overlay => overlay.remove());
+
+          // Resize editor to fit new content
+          resizeEditorToFitContent();
+        });
+
+        runButton.onclick = runEvaluation;
+
+        // Add Ctrl+S keyboard shortcut
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, function () {
+          runEvaluation();
+        });
+
+        // Focus the editor
+        setTimeout(() => editor.focus(), 100);
+      });
+
+      cell.appendChild(loadingPlaceholder);
+      cell.appendChild(editorContainer);
+      cell.appendChild(runButton);
+      cell.appendChild(output);
+      notebook.appendChild(cell);
+    }
+
+    // Function to load example from file
+    async function loadDefaultExample() {
+      try {
+        const response = await fetch('examples/simple-math.js');
+        if (!response.ok) {
+          throw new Error(`Failed to fetch example: ${response.status}`);
+        }
+        const exampleCode = await response.text();
+        addCell(exampleCode);
+      } catch (error) {
+        console.error('Error loading default example:', error);
+        // Fallback to a simple example if fetch fails
+        addCell('price = 25\ntax = price * 0.08\ntotal = price + tax\n`Price: $${price}, Tax: $${tax.toFixed(2)}, Total: $${total.toFixed(2)}`');
+      }
+    }
+
+    // Function to load a specific example
+    async function loadExample(filename) {
+      try {
+        const response = await fetch(`examples/${filename}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch example: ${response.status}`);
+        }
+        const exampleCode = await response.text();
+
+        // If there's already a first cell, replace its content
+        if (editors.length > 0 && editors[0]) {
+          editors[0].setValue(exampleCode);
+          editors[0].focus();
+
+          // Clear the output when loading a new example
+          const firstCell = document.querySelector('.cell');
+          if (firstCell) {
+            const output = firstCell.querySelector('.output');
+            if (output) {
+              output.textContent = '';
+            }
+          }
+        } else {
+          // Otherwise, add a new cell
+          addCell(exampleCode);
+        }
+      } catch (error) {
+        console.error(`Error loading example ${filename}:`, error);
+        alert(`Failed to load example: ${filename}`);
+      }
+    }
+
+    // Function to load and display examples in the right panel
+    async function loadExampleDisplay(filename, elementId) {
+      try {
+        const response = await fetch(`examples/${filename}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch example: ${response.status}`);
+        }
+        const exampleCode = await response.text();
+        document.getElementById(elementId).textContent = exampleCode;
+      } catch (error) {
+        console.error(`Error loading example display ${filename}:`, error);
+        document.getElementById(elementId).textContent = `// Error loading example: ${filename}`;
+      }
+    }
+
+    // Load examples for display in the right panel
+    async function loadExampleDisplays() {
+      await loadExampleDisplay('simple-math.js', 'simple-math-example');
+      await loadExampleDisplay('coffee-spending.js', 'coffee-example');
+      await loadExampleDisplay('gin-basil-smash.js', 'gin-example');
+    }
+
+    // Initialize with a default cell loaded from file and load example displays
+    loadDefaultExample();
+    loadExampleDisplays();
+  </script>
 </body>
 
 </html>
