@@ -243,6 +243,11 @@
 
         runButton.onclick = runEvaluation;
 
+        // Add Ctrl+Enter keyboard shortcut
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, function () {
+          runEvaluation();
+        });
+
         // Focus the editor
         setTimeout(() => editor.focus(), 100);
       });
