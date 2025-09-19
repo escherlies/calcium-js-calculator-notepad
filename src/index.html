@@ -683,7 +683,7 @@
       <div id="notebook" style="margin-top: 24px;"></div>
     </div>
 
-    <div class="right-panel" style="margin-top: 0;">
+    <div class="right-panel" style="margin-top: 32px;">
       <div class="examples-section">
         <h3 style="font-size: 1.4em; font-weight: 500; margin-bottom: 24px;">📚 Examples</h3>
 
@@ -1191,10 +1191,17 @@
           const lineContent = editor.getModel().getLineContent(lineNumber);
           const lineLength = lineContent.length;
 
-          // Calculate approximate position
-          const charWidth = fontSize * 0.6; // Approximate character width
-          const leftOffset = lineLength * charWidth + 56 + (2 * charWidth); // Add some padding + 2 characters indent
-          const topOffset = (lineNumber - 1) * lineHeight + 4;
+          // Get Monaco's actual layout information and scroll position
+          const layoutInfo = editor.getLayoutInfo();
+          const scrollLeft = editor.getScrollLeft();
+
+          // Calculate more accurate character width using Monaco's font metrics
+          const charWidth = fontSize * 0.6; // Approximate character width for monospace
+          const leftOffset = layoutInfo.contentLeft + (lineLength * charWidth) + 16 - scrollLeft; // Subtract scroll position
+
+          // Account for editor padding and correct line positioning
+          const topSpace = 24; // Extra space at top from editor padding
+          const topOffset = (lineNumber - 1) * lineHeight + topSpace;
 
           // Create hint element
           const hintElement = document.createElement('div');
@@ -1226,6 +1233,21 @@
 
           // Resize editor to fit new content
           resizeEditorToFitContent();
+        });
+
+        // Update hint positions when scrolling horizontally
+        editor.onDidScrollChange((e) => {
+          if (e.scrollLeftChanged) {
+            // Clear and recreate hints with updated positions
+            const existingOverlays = editorContainer.querySelectorAll('.inline-hint-overlay');
+            existingOverlays.forEach(overlay => overlay.remove());
+            
+            // Re-run evaluation to recreate hints at correct positions
+            // Only if there are existing hints to avoid unnecessary re-evaluation
+            if (existingOverlays.length > 0) {
+              runEvaluation();
+            }
+          }
         });
 
         runButton.onclick = runEvaluation;
