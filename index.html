@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JS Line Evaluator</title>
+  <!-- Monaco Editor will be loaded via script -->
+  <style>
+    body {
+      font-family: monospace;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+
+    .cell {
+      background: white;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .monaco-editor-container {
+      width: 100%;
+      height: 300px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    button {
+      margin-top: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .output {
+      background: #eee;
+      padding: 5px;
+      border-radius: 4px;
+      margin: 5px 0 0;
+      white-space: pre-wrap;
+    }
+
+    .line-result {
+      color: #555;
+      margin-left: 10px;
+    }
+
+    .monaco-editor .line-result-hint {
+      color: #007acc !important;
+      font-style: italic !important;
+      opacity: 0.8 !important;
+      font-weight: normal !important;
+    }
+
+    .monaco-editor .line-error-hint {
+      color: #d73a49 !important;
+      font-style: italic !important;
+      opacity: 0.8 !important;
+      font-weight: normal !important;
+    }
+
+    .monaco-editor .line-with-result {
+      position: relative;
+    }
+
+    .monaco-editor .line-with-error {
+      position: relative;
+    }
+
+    /* Alternative approach using content injection */
+    .monaco-editor .line-result-hint::after {
+      content: attr(data-result);
+      color: #007acc;
+      font-style: italic;
+      opacity: 0.8;
+      margin-left: 10px;
+    }
+
+    .monaco-editor .line-error-hint::after {
+      content: attr(data-error);
+      color: #d73a49;
+      font-style: italic;
+      opacity: 0.8;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>JS Line Notebook</h1>
+  <div id="notebook"></div>
+  <button onclick="addCell()">+ Add Cell</button>
+
+  <!-- Monaco Editor -->
+  <script type="text/javascript" src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>
+  <script>
+    require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' } });
+
+    // Before loading vs/editor/editor.main, define a global MonacoEnvironment that overwrites
+    // the default worker url location (used when creating WebWorkers). The problem here is that
+    // HTML5 does not allow cross-domain web workers, so we need to proxy the instantiation of
+    // a web worker through a same-domain script
+    window.MonacoEnvironment = {
+      getWorkerUrl: function (workerId, label) {
+        return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+          self.MonacoEnvironment = {
+            baseUrl: 'https://unpkg.com/monaco-editor@latest/min/'
+          };
+          importScripts('https://unpkg.com/monaco-editor@latest/min/vs/base/worker/workerMain.js');`
+        )}`;
+      }
+    };
+
+    let cellCounter = 0;
+
+    function addCell(code = '') {
+      const notebook = document.getElementById("notebook");
+      const cell = document.createElement("div");
+      cell.className = "cell";
+
+      // Create Monaco editor container
+      const editorContainer = document.createElement("div");
+      editorContainer.className = "monaco-editor-container";
+      editorContainer.id = `monaco-editor-${cellCounter++}`;
+
+      const runButton = document.createElement("button");
+      runButton.textContent = "Run";
+
+      const output = document.createElement("pre");
+      output.className = "output";
+
+      // Create Monaco editor
+      require(["vs/editor/editor.main"], function () {
+        const editor = monaco.editor.create(editorContainer, {
+          value: code,
+          language: 'javascript',
+          theme: 'vs-light',
+          minimap: { enabled: false },
+          scrollBeyondLastLine: false,
+          automaticLayout: true,
+          fontSize: 14,
+          lineNumbers: 'on',
+          roundedSelection: false,
+          scrollbar: {
+            vertical: 'auto',
+            horizontal: 'auto'
+          },
+          wordWrap: 'off'
+        });
+
+        let currentDecorations = [];
+
+        // Function to clear all inline hints
+        function clearInlineHints() {
+          currentDecorations = editor.deltaDecorations(currentDecorations, []);
+        }
+
+        // Function to run evaluation and show inline hints
+        function runEvaluation() {
+          output.textContent = ""; // reset output
+          const code = editor.getValue();
+          const lines = code.split("\n");
+
+          // Clear previous decorations properly
+          clearInlineHints();
+
+          // Clear any existing overlay hints
+          const existingOverlays = editorContainer.querySelectorAll('.inline-hint-overlay');
+          existingOverlays.forEach(overlay => overlay.remove());
+
+          console.log('Running evaluation on', lines.length, 'lines');
+
+          lines.forEach((line, index) => {
+            if (line.trim() === "") return; // skip empty lines
+            try {
+              // Create a clean evaluation context
+              let result = (function () {
+                return eval(line);
+              })();
+
+              // Handle undefined results properly
+              const resultText = result === undefined ? 'undefined' : String(result);
+
+              // Create overlay hint element
+              createInlineHint(index + 1, ` ⟶ ${resultText}`, 'result');
+
+              output.textContent += line + "  ⟶  " + resultText + "\n";
+            } catch (err) {
+              // Create overlay hint element for error
+              createInlineHint(index + 1, ` ⟶ Error: ${err.message}`, 'error');
+
+              output.textContent += line + "  ⟶  Error: " + err.message + "\n";
+            }
+          });
+        }
+
+        // Function to create inline hint overlays
+        function createInlineHint(lineNumber, text, type) {
+          const lineHeight = editor.getOption(monaco.editor.EditorOption.lineHeight);
+          const fontSize = editor.getOption(monaco.editor.EditorOption.fontSize);
+
+          // Get the line content to calculate position
+          const lineContent = editor.getModel().getLineContent(lineNumber);
+          const lineLength = lineContent.length;
+
+          // Calculate approximate position
+          const charWidth = fontSize * 0.6; // Approximate character width
+          const leftOffset = lineLength * charWidth + 60 + (2 * charWidth); // Add some padding + 2 characters indent
+          const topOffset = (lineNumber - 1) * lineHeight + 3;
+
+          // Create hint element
+          const hintElement = document.createElement('div');
+          hintElement.className = `inline-hint-overlay inline-hint-${type}`;
+          hintElement.textContent = text;
+          hintElement.style.cssText = `
+            position: absolute;
+            left: ${leftOffset}px;
+            top: ${topOffset}px;
+            color: ${type === 'error' ? '#d73a49' : '#007acc'};
+            font-style: italic;
+            opacity: 0.8;
+            font-size: ${fontSize}px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            pointer-events: none;
+            z-index: 10;
+            white-space: nowrap;
+          `;
+
+          editorContainer.appendChild(hintElement);
+        }
+
+        // Clear hints when content changes
+        editor.onDidChangeModelContent(() => {
+          clearInlineHints();
+          // Also clear overlay hints
+          const existingOverlays = editorContainer.querySelectorAll('.inline-hint-overlay');
+          existingOverlays.forEach(overlay => overlay.remove());
+        });
+
+        runButton.onclick = runEvaluation;
+
+        // Focus the editor
+        setTimeout(() => editor.focus(), 100);
+      });
+
+      cell.appendChild(editorContainer);
+      cell.appendChild(runButton);
+      cell.appendChild(output);
+      notebook.appendChild(cell);
+    }
+
+    // Initialize with a default cell
+    require(["vs/editor/editor.main"], function () {
+      addCell('// Try some JavaScript code:\nlet x = 5;\nlet y = 10;\nx + y');
+    });
+  </script>
+</body>
+
+</html>
