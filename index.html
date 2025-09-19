@@ -98,9 +98,9 @@
   <button onclick="addCell()">+ Add Cell</button>
 
   <!-- Monaco Editor -->
-  <script type="text/javascript" src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/monaco-editor@0.52.0/min/vs/loader.js"></script>
   <script>
-    require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' } });
+    require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.52.0/min/vs' } });
 
     // Before loading vs/editor/editor.main, define a global MonacoEnvironment that overwrites
     // the default worker url location (used when creating WebWorkers). The problem here is that
@@ -110,9 +110,9 @@
       getWorkerUrl: function (workerId, label) {
         return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
           self.MonacoEnvironment = {
-            baseUrl: 'https://unpkg.com/monaco-editor@latest/min/'
+            baseUrl: 'https://unpkg.com/monaco-editor@0.52.0/min/'
           };
-          importScripts('https://unpkg.com/monaco-editor@latest/min/vs/base/worker/workerMain.js');`
+          importScripts('https://unpkg.com/monaco-editor@0.52.0/min/vs/base/worker/workerMain.js');`
         )}`;
       }
     };
