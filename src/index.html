@@ -271,13 +271,7 @@
     }
 
     .cell {
-      background: var(--bg-secondary);
-      padding: 20px;
       margin-bottom: 24px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px var(--shadow);
-      border: 1px solid var(--border-secondary);
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .monaco-editor-container {
@@ -455,25 +449,13 @@
     }
 
     /* Theme Switcher Styles */
-    .theme-switcher {
+    .theme-buttons-container {
       position: fixed;
       top: 32px;
       right: 32px;
       z-index: 1000;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-secondary);
-      border-radius: 12px;
-      padding: 6px;
-      box-shadow: 0 2px 8px var(--shadow);
       display: flex;
-      gap: 2px;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-    }
-
-    .theme-switcher:hover {
-      box-shadow: 0 4px 12px var(--shadow);
-      transform: translateY(-1px);
+      gap: 8px;
     }
 
     .theme-button {
@@ -621,12 +603,10 @@
     }
 
     @media (max-width: 768px) {
-      .theme-switcher {
+      .theme-buttons-container {
         top: 16px;
         right: 16px;
-        padding: 4px;
-        gap: 1px;
-        border-radius: 10px;
+        gap: 6px;
       }
 
       .theme-button {
@@ -644,8 +624,8 @@
 </head>
 
 <body>
-  <!-- Theme Switcher -->
-  <div class="theme-switcher">
+  <!-- Theme Buttons -->
+  <div class="theme-buttons-container">
     <button class="theme-button auto active" onclick="setTheme('auto')" title="Auto (System)">
       🌓
     </button>
