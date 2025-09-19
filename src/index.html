@@ -6,13 +6,73 @@
   <title>Calcium - JS Line Notebook</title>
   <!-- Monaco Editor will be loaded via script -->
   <style>
+    :root {
+      /* Light theme variables */
+      --bg-primary: #f5f5f5;
+      --bg-secondary: white;
+      --bg-tertiary: #f8f9fa;
+      --bg-quaternary: #e9ecef;
+      --bg-code: #fafafa;
+      --bg-output: #eee;
+      --bg-about: #f9f9f9;
+
+      --text-primary: #333;
+      --text-secondary: #495057;
+      --text-tertiary: #555;
+      --text-muted: #666;
+
+      --border-primary: #ddd;
+      --border-secondary: #e9ecef;
+      --border-tertiary: #dee2e6;
+      --border-quaternary: #eee;
+
+      --accent-primary: #007acc;
+      --accent-hover: #005a9e;
+      --error-color: #d73a49;
+
+      --shadow: rgba(0, 0, 0, 0.1);
+      --monaco-theme: 'vs-light';
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        /* Dark theme variables */
+        --bg-primary: #1e1e1e;
+        --bg-secondary: #252526;
+        --bg-tertiary: #2d2d30;
+        --bg-quaternary: #3e3e42;
+        --bg-code: #1e1e1e;
+        --bg-output: #2d2d30;
+        --bg-about: #252526;
+
+        --text-primary: #cccccc;
+        --text-secondary: #cccccc;
+        --text-tertiary: #cccccc;
+        --text-muted: #969696;
+
+        --border-primary: #3e3e42;
+        --border-secondary: #3e3e42;
+        --border-tertiary: #3e3e42;
+        --border-quaternary: #3e3e42;
+
+        --accent-primary: #0e639c;
+        --accent-hover: #1177bb;
+        --error-color: #f85149;
+
+        --shadow: rgba(0, 0, 0, 0.3);
+        --monaco-theme: 'vs-dark';
+      }
+    }
+
     body {
       font-family: monospace;
-      background: #f5f5f5;
+      background: var(--bg-primary);
+      color: var(--text-primary);
       padding: 10px;
       margin: 0;
       box-sizing: border-box;
       overflow-x: auto;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .main-container {
@@ -47,38 +107,41 @@
     }
 
     .examples-section {
-      background: white;
+      background: var(--bg-secondary);
       padding: 15px;
       border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 5px var(--shadow);
       margin-bottom: 20px;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .examples-section h3 {
       margin-top: 0;
       margin-bottom: 15px;
-      color: #333;
-      border-bottom: 1px solid #eee;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border-quaternary);
       padding-bottom: 8px;
     }
 
     .example-item {
-      background: #f8f9fa;
-      border: 1px solid #e9ecef;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-secondary);
       border-radius: 6px;
       margin-bottom: 15px;
       overflow: hidden;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
     .example-header {
-      background: #e9ecef;
+      background: var(--bg-quaternary);
       padding: 8px 12px;
       font-weight: bold;
-      color: #495057;
-      border-bottom: 1px solid #dee2e6;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border-tertiary);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
 
     .example-code {
@@ -92,60 +155,66 @@
       max-height: 250px;
       word-wrap: break-word;
       box-sizing: border-box;
+      color: var(--text-primary);
+      transition: color 0.3s ease;
     }
 
     .load-example-btn {
-      background: #007acc;
+      background: var(--accent-primary);
       color: white;
       border: none;
       padding: 4px 8px;
       border-radius: 4px;
       cursor: pointer;
       font-size: 12px;
+      transition: background-color 0.3s ease;
     }
 
     .load-example-btn:hover {
-      background: #005a9e;
+      background: var(--accent-hover);
     }
 
     .cell {
-      background: white;
+      background: var(--bg-secondary);
       padding: 10px;
       margin-bottom: 10px;
       border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 5px var(--shadow);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .monaco-editor-container {
       width: 100%;
       min-height: 100px;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border-primary);
       border-radius: 4px;
       overflow: hidden;
       position: relative;
       box-sizing: border-box;
+      transition: border-color 0.3s ease;
     }
 
     .monaco-loading-placeholder {
       width: 100%;
       height: 300px;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border-primary);
       border-radius: 4px;
-      background: #fafafa;
+      background: var(--bg-code);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      color: #666;
+      color: var(--text-muted);
       font-family: monospace;
       position: relative;
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
     }
 
     .monaco-loading-spinner {
       width: 24px;
       height: 24px;
-      border: 2px solid #e0e0e0;
-      border-top: 2px solid #007acc;
+      border: 2px solid var(--border-primary);
+      border-top: 2px solid var(--accent-primary);
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin-bottom: 12px;
@@ -170,30 +239,41 @@
       margin-top: 5px;
       padding: 5px 10px;
       cursor: pointer;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-primary);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: var(--bg-tertiary);
     }
 
     .output {
-      background: #eee;
+      background: var(--bg-output);
+      color: var(--text-primary);
       padding: 5px;
       border-radius: 4px;
       margin: 5px 0 0;
       white-space: pre-wrap;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .line-result {
-      color: #555;
+      color: var(--text-tertiary);
       margin-left: 10px;
     }
 
     .monaco-editor .line-result-hint {
-      color: #007acc !important;
+      color: var(--accent-primary) !important;
       font-style: italic !important;
       opacity: 0.8 !important;
       font-weight: normal !important;
     }
 
     .monaco-editor .line-error-hint {
-      color: #d73a49 !important;
+      color: var(--error-color) !important;
       font-style: italic !important;
       opacity: 0.8 !important;
       font-weight: normal !important;
@@ -210,7 +290,7 @@
     /* Alternative approach using content injection */
     .monaco-editor .line-result-hint::after {
       content: attr(data-result);
-      color: #007acc;
+      color: var(--accent-primary);
       font-style: italic;
       opacity: 0.8;
       margin-left: 10px;
@@ -218,7 +298,7 @@
 
     .monaco-editor .line-error-hint::after {
       content: attr(data-error);
-      color: #d73a49;
+      color: var(--error-color);
       font-style: italic;
       opacity: 0.8;
       margin-left: 10px;
@@ -227,26 +307,28 @@
     .about-toggle {
       background: none;
       border: none;
-      color: #007acc;
+      color: var(--accent-primary);
       cursor: pointer;
       font-size: 12px;
       text-decoration: underline;
       padding: 0;
       margin-left: 5px;
+      transition: color 0.3s ease;
     }
 
     .about-toggle:hover {
-      color: #005a9e;
+      color: var(--accent-hover);
     }
 
     .about-panel {
       display: none;
-      background: #f9f9f9;
-      border: 1px solid #ddd;
+      background: var(--bg-about);
+      border: 1px solid var(--border-primary);
       border-radius: 8px;
       padding: 15px;
       margin: 15px 0;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 5px var(--shadow);
+      transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .about-panel.show {
@@ -255,7 +337,7 @@
 
     .about-panel h3 {
       margin-top: 0;
-      color: #333;
+      color: var(--text-primary);
     }
 
     .about-panel ul {
@@ -362,6 +444,36 @@
     let cellCounter = 0;
     let editors = []; // Track all editors
 
+    // System theme detection
+    function getSystemTheme() {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'vs-dark' : 'vs-light';
+    }
+
+    function updateEditorsTheme(theme) {
+      editors.forEach(editor => {
+        if (editor && !editor.isDisposed()) {
+          monaco.editor.setTheme(theme);
+        }
+      });
+    }
+
+    function initializeTheme() {
+      // Listen for system theme changes
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+      // Update editors when system theme changes
+      mediaQuery.addEventListener('change', (e) => {
+        const newTheme = e.matches ? 'vs-dark' : 'vs-light';
+        updateEditorsTheme(newTheme);
+      });
+
+      return getSystemTheme();
+    }
+
+    function getCurrentTheme() {
+      return getSystemTheme();
+    }
+
     function toggleAbout() {
       const panel = document.getElementById('about-panel');
       const button = document.querySelector('.about-toggle');
@@ -410,7 +522,7 @@
         const editor = monaco.editor.create(editorContainer, {
           value: code,
           language: 'javascript',
-          theme: 'vs-light',
+          theme: getCurrentTheme(),
           minimap: { enabled: false },
           scrollBeyondLastLine: false,
           automaticLayout: true,
@@ -579,7 +691,7 @@
             position: absolute;
             left: ${leftOffset}px;
             top: ${topOffset}px;
-            color: ${type === 'error' ? '#d73a49' : '#505050'};
+            color: ${type === 'error' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? '#f85149' : '#d73a49') : (window.matchMedia('(prefers-color-scheme: dark)').matches ? '#cccccc' : '#555')};
             font-style: italic;
             opacity: 0.8;
             font-size: ${fontSize}px;
@@ -691,7 +803,8 @@
       await loadExampleDisplay('gin-basil-smash.js', 'gin-example');
     }
 
-    // Initialize with a default cell loaded from file and load example displays
+    // Initialize theme and then load content
+    initializeTheme();
     loadDefaultExample();
     loadExampleDisplays();
   </script>
