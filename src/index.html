@@ -7,60 +7,144 @@
   <!-- Monaco Editor will be loaded via script -->
   <style>
     :root {
-      /* Light theme variables */
-      --bg-primary: #fafafa;
-      --bg-secondary: #ffffff;
-      --bg-tertiary: #fcfcfc;
-      --bg-quaternary: #f5f5f5;
-      --bg-code: #ffffff;
-      --bg-output: #f8f9fa;
-      --bg-about: #ffffff;
+      /* Catppuccin Latte (Light) theme variables */
+      --bg-primary: #eff1f5;
+      --bg-secondary: #e6e9ef;
+      --bg-tertiary: #dce0e8;
+      --bg-quaternary: #ccd0da;
+      --bg-code: #e6e9ef;
+      --bg-output: #dce0e8;
+      --bg-about: #e6e9ef;
 
-      --text-primary: #2c3e50;
-      --text-secondary: #34495e;
-      --text-tertiary: #5a6c7d;
-      --text-muted: #7f8c8d;
+      --text-primary: #4c4f69;
+      --text-secondary: #5c5f77;
+      --text-tertiary: #6c6f85;
+      --text-muted: #9ca0b0;
 
-      --border-primary: #e8e9ea;
-      --border-secondary: #f1f2f3;
-      --border-tertiary: #ecf0f1;
-      --border-quaternary: #f4f5f6;
+      --border-primary: #ccd0da;
+      --border-secondary: #bcc0cc;
+      --border-tertiary: #acb0be;
+      --border-quaternary: #9ca0b0;
 
-      --accent-primary: #3498db;
-      --accent-hover: #2980b9;
-      --error-color: #e74c3c;
+      --accent-primary: #1e66f5;
+      --accent-hover: #04a5e5;
+      --error-color: #d20f39;
 
-      --shadow: rgba(0, 0, 0, 0.06);
-      --monaco-theme: 'vs-light';
+      --shadow: rgba(76, 79, 105, 0.1);
+      --monaco-theme: 'catppuccin-latte';
     }
 
+    /* Catppuccin Frappé theme */
+    [data-theme="frappe"] {
+      --bg-primary: #303446;
+      --bg-secondary: #292c3c;
+      --bg-tertiary: #232634;
+      --bg-quaternary: #414559;
+      --bg-code: #292c3c;
+      --bg-output: #232634;
+      --bg-about: #292c3c;
+
+      --text-primary: #c6d0f5;
+      --text-secondary: #b5bfe2;
+      --text-tertiary: #a5adce;
+      --text-muted: #838ba7;
+
+      --border-primary: #414559;
+      --border-secondary: #51576d;
+      --border-tertiary: #626880;
+      --border-quaternary: #737994;
+
+      --accent-primary: #8caaee;
+      --accent-hover: #99d1db;
+      --error-color: #e78284;
+
+      --shadow: rgba(0, 0, 0, 0.3);
+      --monaco-theme: 'catppuccin-frappe';
+    }
+
+    /* Catppuccin Macchiato theme */
+    [data-theme="macchiato"] {
+      --bg-primary: #24273a;
+      --bg-secondary: #1e2030;
+      --bg-tertiary: #181926;
+      --bg-quaternary: #363a4f;
+      --bg-code: #1e2030;
+      --bg-output: #181926;
+      --bg-about: #1e2030;
+
+      --text-primary: #cad3f5;
+      --text-secondary: #b8c0e0;
+      --text-tertiary: #a5adcb;
+      --text-muted: #8087a2;
+
+      --border-primary: #363a4f;
+      --border-secondary: #494d64;
+      --border-tertiary: #5b6078;
+      --border-quaternary: #6e738d;
+
+      --accent-primary: #8aadf4;
+      --accent-hover: #91d7e3;
+      --error-color: #ed8796;
+
+      --shadow: rgba(0, 0, 0, 0.4);
+      --monaco-theme: 'catppuccin-macchiato';
+    }
+
+    /* Catppuccin Mocha theme */
+    [data-theme="mocha"] {
+      --bg-primary: #1e1e2e;
+      --bg-secondary: #181825;
+      --bg-tertiary: #11111b;
+      --bg-quaternary: #313244;
+      --bg-code: #181825;
+      --bg-output: #11111b;
+      --bg-about: #181825;
+
+      --text-primary: #cdd6f4;
+      --text-secondary: #bac2de;
+      --text-tertiary: #a6adc8;
+      --text-muted: #7f849c;
+
+      --border-primary: #313244;
+      --border-secondary: #45475a;
+      --border-tertiary: #585b70;
+      --border-quaternary: #6c7086;
+
+      --accent-primary: #89b4fa;
+      --accent-hover: #89dceb;
+      --error-color: #f38ba8;
+
+      --shadow: rgba(0, 0, 0, 0.5);
+      --monaco-theme: 'catppuccin-mocha';
+    }
+
+    /* Auto theme based on system preference */
     @media (prefers-color-scheme: dark) {
-      :root {
-        /* Dark theme variables */
-        --bg-primary: #1e1e1e;
-        --bg-secondary: #252526;
-        --bg-tertiary: #2d2d30;
-        --bg-quaternary: #3e3e42;
-        --bg-code: #1e1e1e;
-        --bg-output: #2d2d30;
-        --bg-about: #252526;
+      :root:not([data-theme]) {
+        --bg-primary: #1e1e2e;
+        --bg-secondary: #181825;
+        --bg-tertiary: #11111b;
+        --bg-quaternary: #313244;
+        --bg-code: #181825;
+        --bg-output: #11111b;
+        --bg-about: #181825;
 
-        --text-primary: #cccccc;
-        --text-secondary: #cccccc;
-        --text-tertiary: #cccccc;
-        --text-muted: #969696;
+        --text-primary: #cdd6f4;
+        --text-secondary: #bac2de;
+        --text-tertiary: #a6adc8;
+        --text-muted: #7f849c;
 
-        --border-primary: #3e3e42;
-        --border-secondary: #3e3e42;
-        --border-tertiary: #3e3e42;
-        --border-quaternary: #3e3e42;
+        --border-primary: #313244;
+        --border-secondary: #45475a;
+        --border-tertiary: #585b70;
+        --border-quaternary: #6c7086;
 
-        --accent-primary: #0e639c;
-        --accent-hover: #1177bb;
-        --error-color: #f85149;
+        --accent-primary: #89b4fa;
+        --accent-hover: #89dceb;
+        --error-color: #f38ba8;
 
-        --shadow: rgba(0, 0, 0, 0.3);
-        --monaco-theme: 'vs-dark';
+        --shadow: rgba(0, 0, 0, 0.5);
+        --monaco-theme: 'catppuccin-mocha';
       }
     }
 
@@ -369,10 +453,216 @@
       margin-bottom: 12px;
       line-height: 1.5;
     }
+
+    /* Theme Switcher Styles */
+    .theme-switcher {
+      position: fixed;
+      top: 32px;
+      right: 32px;
+      z-index: 1000;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-secondary);
+      border-radius: 12px;
+      padding: 6px;
+      box-shadow: 0 2px 8px var(--shadow);
+      display: flex;
+      gap: 2px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .theme-switcher:hover {
+      box-shadow: 0 4px 12px var(--shadow);
+      transform: translateY(-1px);
+    }
+
+    .theme-button {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border-primary);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: var(--bg-tertiary);
+      overflow: hidden;
+    }
+
+    .theme-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      border-radius: 7px;
+    }
+
+    .theme-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px var(--shadow);
+      border-color: var(--border-secondary);
+      background: var(--bg-quaternary);
+    }
+
+    .theme-button.active {
+      border-color: var(--accent-primary);
+      background: var(--accent-primary);
+      color: white;
+      box-shadow: 0 2px 8px rgba(30, 102, 245, 0.3);
+    }
+
+    .theme-button.active:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 4px 12px rgba(30, 102, 245, 0.4);
+    }
+
+    .theme-button.latte::before {
+      background: linear-gradient(135deg, #eff1f5 0%, #dce0e8 100%);
+    }
+
+    .theme-button.frappe::before {
+      background: linear-gradient(135deg, #303446 0%, #232634 100%);
+    }
+
+    .theme-button.macchiato::before {
+      background: linear-gradient(135deg, #24273a 0%, #181926 100%);
+    }
+
+    .theme-button.mocha::before {
+      background: linear-gradient(135deg, #1e1e2e 0%, #11111b 100%);
+    }
+
+    .theme-button.auto::before {
+      background: linear-gradient(45deg, #eff1f5 0%, #eff1f5 50%, #1e1e2e 50%, #1e1e2e 100%);
+    }
+
+    .theme-button:not(.active):hover::before {
+      opacity: 0.3;
+    }
+
+    /* Theme preview dots */
+    .theme-button .theme-preview {
+      display: flex;
+      gap: 2px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .theme-button .theme-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .theme-button.latte .theme-dot:nth-child(1) {
+      background: #4c4f69;
+    }
+
+    .theme-button.latte .theme-dot:nth-child(2) {
+      background: #1e66f5;
+    }
+
+    .theme-button.latte .theme-dot:nth-child(3) {
+      background: #40a02b;
+    }
+
+    .theme-button.frappe .theme-dot:nth-child(1) {
+      background: #c6d0f5;
+    }
+
+    .theme-button.frappe .theme-dot:nth-child(2) {
+      background: #8caaee;
+    }
+
+    .theme-button.frappe .theme-dot:nth-child(3) {
+      background: #a6d189;
+    }
+
+    .theme-button.macchiato .theme-dot:nth-child(1) {
+      background: #cad3f5;
+    }
+
+    .theme-button.macchiato .theme-dot:nth-child(2) {
+      background: #8aadf4;
+    }
+
+    .theme-button.macchiato .theme-dot:nth-child(3) {
+      background: #a6da95;
+    }
+
+    .theme-button.mocha .theme-dot:nth-child(1) {
+      background: #cdd6f4;
+    }
+
+    .theme-button.mocha .theme-dot:nth-child(2) {
+      background: #89b4fa;
+    }
+
+    .theme-button.mocha .theme-dot:nth-child(3) {
+      background: #a6e3a1;
+    }
+
+    .theme-button.auto .theme-dot:nth-child(1) {
+      background: #4c4f69;
+    }
+
+    .theme-button.auto .theme-dot:nth-child(2) {
+      background: #cdd6f4;
+    }
+
+    @media (max-width: 768px) {
+      .theme-switcher {
+        top: 16px;
+        right: 16px;
+        padding: 4px;
+        gap: 1px;
+        border-radius: 10px;
+      }
+
+      .theme-button {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+      }
+
+      .theme-button .theme-dot {
+        width: 3px;
+        height: 3px;
+      }
+    }
   </style>
 </head>
 
 <body>
+  <!-- Theme Switcher -->
+  <div class="theme-switcher">
+    <button class="theme-button auto active" onclick="setTheme('auto')" title="Auto (System)">
+      🌓
+    </button>
+    <button class="theme-button latte" onclick="setTheme('latte')" title="Catppuccin Latte">
+      ☀️
+    </button>
+    <button class="theme-button frappe" onclick="setTheme('frappe')" title="Catppuccin Frappé">
+      🌅
+    </button>
+    <button class="theme-button macchiato" onclick="setTheme('macchiato')" title="Catppuccin Macchiato">
+      🌆
+    </button>
+    <button class="theme-button mocha" onclick="setTheme('mocha')" title="Catppuccin Mocha">
+      🌙
+    </button>
+  </div>
+
   <div class="main-container">
     <div class="left-panel">
       <h1 style="margin-bottom: 24px; font-size: 2.5em; font-weight: 300; letter-spacing: -0.02em;">Calcium</h1>
@@ -463,35 +753,247 @@
 
     let cellCounter = 0;
     let editors = []; // Track all editors
+    let currentTheme = 'auto'; // Track current theme
 
-    // System theme detection
+    // Catppuccin theme definitions for Monaco Editor
+    const catppuccinThemes = {
+      'catppuccin-latte': {
+        base: 'vs',
+        inherit: true,
+        rules: [
+          { token: '', foreground: '4c4f69', background: 'e6e9ef' },
+          { token: 'comment', foreground: '9ca0b0', fontStyle: 'italic' },
+          { token: 'keyword', foreground: '8839ef' },
+          { token: 'string', foreground: '40a02b' },
+          { token: 'number', foreground: 'fe640b' },
+          { token: 'regexp', foreground: 'ea76cb' },
+          { token: 'operator', foreground: '179299' },
+          { token: 'namespace', foreground: 'df8e1d' },
+          { token: 'type', foreground: 'df8e1d' },
+          { token: 'struct', foreground: 'df8e1d' },
+          { token: 'class', foreground: 'df8e1d' },
+          { token: 'interface', foreground: 'df8e1d' },
+          { token: 'enum', foreground: 'df8e1d' },
+          { token: 'typeParameter', foreground: 'df8e1d' },
+          { token: 'function', foreground: '1e66f5' },
+          { token: 'method', foreground: '1e66f5' },
+          { token: 'decorator', foreground: '1e66f5' },
+          { token: 'macro', foreground: '8839ef' },
+          { token: 'variable', foreground: '4c4f69' },
+          { token: 'parameter', foreground: 'd20f39' },
+          { token: 'property', foreground: '1e66f5' },
+          { token: 'label', foreground: '1e66f5' }
+        ],
+        colors: {
+          'editor.background': '#e6e9ef',
+          'editor.foreground': '#4c4f69',
+          'editorLineNumber.foreground': '#9ca0b0',
+          'editorLineNumber.activeForeground': '#4c4f69',
+          'editor.selectionBackground': '#ccd0da',
+          'editor.selectionHighlightBackground': '#bcc0cc',
+          'editor.findMatchBackground': '#df8e1d',
+          'editor.findMatchHighlightBackground': '#fe640b',
+          'editorCursor.foreground': '#dc8a78',
+          'editor.lineHighlightBackground': '#dce0e8',
+          'editorWhitespace.foreground': '#9ca0b0',
+          'editorIndentGuide.background': '#ccd0da',
+          'editorIndentGuide.activeBackground': '#9ca0b0'
+        }
+      },
+      'catppuccin-frappe': {
+        base: 'vs-dark',
+        inherit: true,
+        rules: [
+          { token: '', foreground: 'c6d0f5', background: '292c3c' },
+          { token: 'comment', foreground: '838ba7', fontStyle: 'italic' },
+          { token: 'keyword', foreground: 'ca9ee6' },
+          { token: 'string', foreground: 'a6d189' },
+          { token: 'number', foreground: 'ef9f76' },
+          { token: 'regexp', foreground: 'f4b8e4' },
+          { token: 'operator', foreground: '81c8be' },
+          { token: 'namespace', foreground: 'e5c890' },
+          { token: 'type', foreground: 'e5c890' },
+          { token: 'struct', foreground: 'e5c890' },
+          { token: 'class', foreground: 'e5c890' },
+          { token: 'interface', foreground: 'e5c890' },
+          { token: 'enum', foreground: 'e5c890' },
+          { token: 'typeParameter', foreground: 'e5c890' },
+          { token: 'function', foreground: '8caaee' },
+          { token: 'method', foreground: '8caaee' },
+          { token: 'decorator', foreground: '8caaee' },
+          { token: 'macro', foreground: 'ca9ee6' },
+          { token: 'variable', foreground: 'c6d0f5' },
+          { token: 'parameter', foreground: 'e78284' },
+          { token: 'property', foreground: '8caaee' },
+          { token: 'label', foreground: '8caaee' }
+        ],
+        colors: {
+          'editor.background': '#292c3c',
+          'editor.foreground': '#c6d0f5',
+          'editorLineNumber.foreground': '#838ba7',
+          'editorLineNumber.activeForeground': '#c6d0f5',
+          'editor.selectionBackground': '#414559',
+          'editor.selectionHighlightBackground': '#51576d',
+          'editor.findMatchBackground': '#e5c890',
+          'editor.findMatchHighlightBackground': '#ef9f76',
+          'editorCursor.foreground': '#f2d5cf',
+          'editor.lineHighlightBackground': '#232634',
+          'editorWhitespace.foreground': '#838ba7',
+          'editorIndentGuide.background': '#414559',
+          'editorIndentGuide.activeBackground': '#838ba7'
+        }
+      },
+      'catppuccin-macchiato': {
+        base: 'vs-dark',
+        inherit: true,
+        rules: [
+          { token: '', foreground: 'cad3f5', background: '1e2030' },
+          { token: 'comment', foreground: '8087a2', fontStyle: 'italic' },
+          { token: 'keyword', foreground: 'c6a0f6' },
+          { token: 'string', foreground: 'a6da95' },
+          { token: 'number', foreground: 'f5a97f' },
+          { token: 'regexp', foreground: 'f0c6c6' },
+          { token: 'operator', foreground: '8bd5ca' },
+          { token: 'namespace', foreground: 'eed49f' },
+          { token: 'type', foreground: 'eed49f' },
+          { token: 'struct', foreground: 'eed49f' },
+          { token: 'class', foreground: 'eed49f' },
+          { token: 'interface', foreground: 'eed49f' },
+          { token: 'enum', foreground: 'eed49f' },
+          { token: 'typeParameter', foreground: 'eed49f' },
+          { token: 'function', foreground: '8aadf4' },
+          { token: 'method', foreground: '8aadf4' },
+          { token: 'decorator', foreground: '8aadf4' },
+          { token: 'macro', foreground: 'c6a0f6' },
+          { token: 'variable', foreground: 'cad3f5' },
+          { token: 'parameter', foreground: 'ed8796' },
+          { token: 'property', foreground: '8aadf4' },
+          { token: 'label', foreground: '8aadf4' }
+        ],
+        colors: {
+          'editor.background': '#1e2030',
+          'editor.foreground': '#cad3f5',
+          'editorLineNumber.foreground': '#8087a2',
+          'editorLineNumber.activeForeground': '#cad3f5',
+          'editor.selectionBackground': '#363a4f',
+          'editor.selectionHighlightBackground': '#494d64',
+          'editor.findMatchBackground': '#eed49f',
+          'editor.findMatchHighlightBackground': '#f5a97f',
+          'editorCursor.foreground': '#f4dbd6',
+          'editor.lineHighlightBackground': '#181926',
+          'editorWhitespace.foreground': '#8087a2',
+          'editorIndentGuide.background': '#363a4f',
+          'editorIndentGuide.activeBackground': '#8087a2'
+        }
+      },
+      'catppuccin-mocha': {
+        base: 'vs-dark',
+        inherit: true,
+        rules: [
+          { token: '', foreground: 'cdd6f4', background: '181825' },
+          { token: 'comment', foreground: '7f849c', fontStyle: 'italic' },
+          { token: 'keyword', foreground: 'cba6f7' },
+          { token: 'string', foreground: 'a6e3a1' },
+          { token: 'number', foreground: 'fab387' },
+          { token: 'regexp', foreground: 'f5c2e7' },
+          { token: 'operator', foreground: '94e2d5' },
+          { token: 'namespace', foreground: 'f9e2af' },
+          { token: 'type', foreground: 'f9e2af' },
+          { token: 'struct', foreground: 'f9e2af' },
+          { token: 'class', foreground: 'f9e2af' },
+          { token: 'interface', foreground: 'f9e2af' },
+          { token: 'enum', foreground: 'f9e2af' },
+          { token: 'typeParameter', foreground: 'f9e2af' },
+          { token: 'function', foreground: '89b4fa' },
+          { token: 'method', foreground: '89b4fa' },
+          { token: 'decorator', foreground: '89b4fa' },
+          { token: 'macro', foreground: 'cba6f7' },
+          { token: 'variable', foreground: 'cdd6f4' },
+          { token: 'parameter', foreground: 'f38ba8' },
+          { token: 'property', foreground: '89b4fa' },
+          { token: 'label', foreground: '89b4fa' }
+        ],
+        colors: {
+          'editor.background': '#181825',
+          'editor.foreground': '#cdd6f4',
+          'editorLineNumber.foreground': '#7f849c',
+          'editorLineNumber.activeForeground': '#cdd6f4',
+          'editor.selectionBackground': '#313244',
+          'editor.selectionHighlightBackground': '#45475a',
+          'editor.findMatchBackground': '#f9e2af',
+          'editor.findMatchHighlightBackground': '#fab387',
+          'editorCursor.foreground': '#f5e0dc',
+          'editor.lineHighlightBackground': '#11111b',
+          'editorWhitespace.foreground': '#7f849c',
+          'editorIndentGuide.background': '#313244',
+          'editorIndentGuide.activeBackground': '#7f849c'
+        }
+      }
+    };
+
+    // Theme management
     function getSystemTheme() {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'vs-dark' : 'vs-light';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'catppuccin-mocha' : 'catppuccin-latte';
+    }
+
+    function getCurrentMonacoTheme() {
+      if (currentTheme === 'auto') {
+        return getSystemTheme();
+      }
+      return `catppuccin-${currentTheme}`;
     }
 
     function updateEditorsTheme(theme) {
       editors.forEach(editor => {
-        if (editor && !editor.isDisposed()) {
+        if (editor && editor.getModel()) {
           monaco.editor.setTheme(theme);
         }
       });
     }
 
+    function setTheme(theme) {
+      currentTheme = theme;
+
+      // Update UI theme
+      if (theme === 'auto') {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+
+      // Update Monaco theme
+      const monacoTheme = getCurrentMonacoTheme();
+      updateEditorsTheme(monacoTheme);
+
+      // Update active button
+      document.querySelectorAll('.theme-button').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.theme-button.${theme}`).classList.add('active');
+
+      // Save preference
+      localStorage.setItem('catppuccin-theme', theme);
+    }
+
     function initializeTheme() {
+      // Load saved theme or default to auto
+      const savedTheme = localStorage.getItem('catppuccin-theme') || 'auto';
+
       // Listen for system theme changes
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-      // Update editors when system theme changes
       mediaQuery.addEventListener('change', (e) => {
-        const newTheme = e.matches ? 'vs-dark' : 'vs-light';
-        updateEditorsTheme(newTheme);
+        if (currentTheme === 'auto') {
+          const newTheme = getSystemTheme();
+          updateEditorsTheme(newTheme);
+        }
       });
 
-      return getSystemTheme();
+      // Set initial theme
+      setTheme(savedTheme);
+
+      return getCurrentMonacoTheme();
     }
 
     function getCurrentTheme() {
-      return getSystemTheme();
+      return getCurrentMonacoTheme();
     }
 
     function toggleAbout() {
@@ -535,6 +1037,11 @@
 
       // Create Monaco editor
       require(["vs/editor/editor.main"], function () {
+        // Register Catppuccin themes
+        Object.keys(catppuccinThemes).forEach(themeName => {
+          monaco.editor.defineTheme(themeName, catppuccinThemes[themeName]);
+        });
+
         // Hide loading placeholder and show editor container
         loadingPlaceholder.style.display = "none";
         editorContainer.style.display = "block";
