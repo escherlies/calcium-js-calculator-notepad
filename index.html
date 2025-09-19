@@ -419,56 +419,35 @@
           roundedSelection: false,
           scrollbar: {
             vertical: 'hidden',
-            horizontal: 'auto',
-            alwaysConsumeMouseWheel: false,
-            verticalScrollbarSize: 0,
-            verticalSliderSize: 0
+            horizontal: 'visible',
+            alwaysConsumeMouseWheel: false
           },
           wordWrap: 'off',
-          overviewRulerLanes: 0,
-          disableLayerHinting: true,
-          scrollbar: {
-            vertical: 'hidden',
-            horizontal: 'auto',
-            alwaysConsumeMouseWheel: false,
-            verticalScrollbarSize: 0,
-            verticalSliderSize: 0,
-            handleMouseWheel: false
-          }
+          overviewRulerLanes: 0
         });
 
-        // Completely disable vertical scrolling in Monaco
-        editor.updateOptions({
-          scrollbar: {
-            vertical: 'hidden',
-            horizontal: 'auto',
-            alwaysConsumeMouseWheel: false,
-            verticalScrollbarSize: 0,
-            verticalSliderSize: 0,
-            handleMouseWheel: false
-          }
-        });
-
-        // Completely prevent Monaco from handling mouse wheel events
+        // Completely block ALL vertical scrolling in Monaco, allow only horizontal
         editorContainer.addEventListener('wheel', function (e) {
-          // Prevent Monaco from processing this event at all
-          e.preventDefault();
-          e.stopPropagation();
-          e.stopImmediatePropagation();
-          // Manually scroll the page
-          window.scrollBy(0, e.deltaY);
-        }, { passive: false, capture: true });
+          // Allow shift+scroll (horizontal)
+          if (e.shiftKey && e.deltaY !== 0) {
+            // Convert vertical scroll with shift to horizontal scroll
+            editor.setScrollLeft(editor.getScrollLeft() + e.deltaY);
+            e.preventDefault();
+            return;
+          }
 
-        // Also disable scrolling on the Monaco editor DOM element itself
-        const monacoEditorElement = editorContainer.querySelector('.monaco-editor');
-        if (monacoEditorElement) {
-          monacoEditorElement.addEventListener('wheel', function (e) {
+          // Allow pure horizontal scroll
+          if (e.deltaX !== 0) {
+            return; // Let Monaco handle horizontal scrolling
+          }
+
+          // Block ALL vertical scrolling - redirect to page
+          if (e.deltaY !== 0) {
             e.preventDefault();
             e.stopPropagation();
-            e.stopImmediatePropagation();
             window.scrollBy(0, e.deltaY);
-          }, { passive: false, capture: true });
-        }
+          }
+        }, { passive: false, capture: true });
 
         // Function to resize editor to fit content
         function resizeEditorToFitContent() {
