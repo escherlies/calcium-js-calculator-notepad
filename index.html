@@ -30,6 +30,46 @@
       position: relative;
     }
 
+    .monaco-loading-placeholder {
+      width: 100%;
+      height: 300px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background: #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: #666;
+      font-family: monospace;
+      position: relative;
+    }
+
+    .monaco-loading-spinner {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #e0e0e0;
+      border-top: 2px solid #007acc;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 12px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .monaco-loading-text {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
     button {
       margin-top: 5px;
       padding: 5px 10px;
@@ -204,19 +244,33 @@
           const cell = document.createElement("div");
           cell.className = "cell";
 
-          // Create Monaco editor container
+          // Create loading placeholder
+          const loadingPlaceholder = document.createElement("div");
+          loadingPlaceholder.className = "monaco-loading-placeholder";
+          loadingPlaceholder.innerHTML = `
+            <div class="monaco-loading-spinner"></div>
+            <div class="monaco-loading-text">Loading Editor...</div>
+          `;
+
+          // Create Monaco editor container (initially hidden)
           const editorContainer = document.createElement("div");
           editorContainer.className = "monaco-editor-container";
           editorContainer.id = `monaco-editor-${cellCounter++}`;
+          editorContainer.style.display = "none";
 
           const runButton = document.createElement("button");
           runButton.textContent = "Run";
+          runButton.disabled = true; // Disable until editor is ready
 
           const output = document.createElement("pre");
           output.className = "output";
 
           // Create Monaco editor
           require(["vs/editor/editor.main"], function () {
+            // Hide loading placeholder and show editor container
+            loadingPlaceholder.style.display = "none";
+            editorContainer.style.display = "block";
+            runButton.disabled = false;
             const editor = monaco.editor.create(editorContainer, {
               value: code,
               language: 'javascript',
@@ -351,6 +405,7 @@
             setTimeout(() => editor.focus(), 100);
           });
 
+          cell.appendChild(loadingPlaceholder);
           cell.appendChild(editorContainer);
           cell.appendChild(runButton);
           cell.appendChild(output);
@@ -358,9 +413,7 @@
         }
 
         // Initialize with a default cell
-        require(["vs/editor/editor.main"], function () {
-          addCell('coffeePrice = 4.50 // Daily coffee price\ncroissantPrice = 2.75 // Daily croissant price\ntipPercent = 15 // Tip percentage\nsubtotal = coffeePrice + croissantPrice // Calculate subtotal\ntipAmount = subtotal * tipPercent / 100 // Calculate tip\ntotal = subtotal + tipAmount // Total daily bill\nweeklySpending = total * 5 // Weekly spending (5 days)\nmonthlySpending = weeklySpending * 4 // Monthly spending (4 weeks)');
-        });
+        addCell('coffeePrice = 4.50 // Daily coffee price\ncroissantPrice = 2.75 // Daily croissant price\ntipPercent = 15 // Tip percentage\nsubtotal = coffeePrice + croissantPrice // Calculate subtotal\ntipAmount = subtotal * tipPercent / 100 // Calculate tip\ntotal = subtotal + tipAmount // Total daily bill\nweeklySpending = total * 5 // Weekly spending (5 days)\nmonthlySpending = weeklySpending * 4 // Monthly spending (4 weeks)');
       </script>
 </body>
 
