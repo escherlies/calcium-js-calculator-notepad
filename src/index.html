@@ -1042,7 +1042,11 @@
             alwaysConsumeMouseWheel: false
           },
           wordWrap: 'off',
-          overviewRulerLanes: 0
+          overviewRulerLanes: 0,
+          padding: {
+            top: 30,
+            bottom: 0
+          }
         });
 
         // Completely block ALL vertical scrolling in Monaco, allow only horizontal
@@ -1073,8 +1077,9 @@
           const lineCount = editor.getModel().getLineCount();
           const lineHeight = editor.getOption(monaco.editor.EditorOption.lineHeight);
           const padding = 10; // Add some padding
+          const topSpace = 30; // Extra space at top
           const bottomSpace = 20; // Extra space at bottom for horizontal scrollbar
-          const newHeight = Math.max(100, lineCount * lineHeight + padding + bottomSpace);
+          const newHeight = Math.max(100, lineCount * lineHeight + padding + topSpace + bottomSpace);
 
           editorContainer.style.height = newHeight + 'px';
           editor.layout();
