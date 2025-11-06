@@ -713,6 +713,12 @@
         <button onclick="addCell()">+ Add Cell</button>
       </div> -->
 
+      <div style="margin-bottom: 16px; display: flex; gap: 12px;">
+        <button type="button" onclick="saveNote()" aria-label="Save note to file">💾 Save Note</button>
+        <button type="button" onclick="loadNote()" aria-label="Load note from file">📂 Load Note</button>
+        <input type="file" id="file-input" accept=".json" aria-label="Select note file to load" style="display: none;" onchange="handleFileLoad(event)">
+      </div>
+
       <div id="notebook" style="margin-top: 24px;"></div>
     </div>
 
@@ -1369,6 +1375,128 @@
       await loadExampleDisplay('simple-math.js', 'simple-math-example');
       await loadExampleDisplay('coffee-spending.js', 'coffee-example');
       await loadExampleDisplay('gin-basil-smash.js', 'gin-example');
+    }
+
+    // Function to save the current note
+    function saveNote() {
+      if (editors.length === 0 || !editors[0]) {
+        alert('No editor available. Please wait for the editor to load.');
+        return;
+      }
+
+      // Get the current code from the first editor
+      const code = editors[0].getValue();
+      
+      // Create a note object with metadata
+      const note = {
+        version: '1.0',
+        timestamp: new Date().toISOString(),
+        code: code,
+        theme: currentTheme
+      };
+
+      // Convert to JSON
+      const jsonString = JSON.stringify(note, null, 2);
+      
+      // Create a blob and download link
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      
+      // Create a temporary download link
+      const a = document.createElement('a');
+      a.href = url;
+      
+      // Generate filename with timestamp (format: YYYY-MM-DDTHH-MM-SS)
+      const timestamp = new Date().toISOString().split('.')[0].replace(/[:.]/g, '-');
+      a.download = `calcium-note-${timestamp}.json`;
+      
+      // Trigger download
+      document.body.appendChild(a);
+      a.click();
+      
+      // Cleanup
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      console.log('Note saved successfully');
+    }
+
+    // Function to trigger the file input for loading
+    function loadNote() {
+      const fileInput = document.getElementById('file-input');
+      fileInput.click();
+    }
+
+    // Function to handle file loading
+    function handleFileLoad(event) {
+      const file = event.target.files[0];
+      if (!file) {
+        return;
+      }
+
+      // Validate file type (extension and optionally MIME type)
+      // Note: MIME type can vary across systems, so we check for common types
+      const validMimeTypes = ['application/json', 'text/plain', ''];
+      if (!file.name.endsWith('.json') || !validMimeTypes.includes(file.type)) {
+        alert('Please select a valid JSON note file.');
+        return;
+      }
+
+      const reader = new FileReader();
+      
+      reader.onload = function(e) {
+        try {
+          const note = JSON.parse(e.target.result);
+          
+          // Validate the note structure and types
+          if (!note.code || typeof note.code !== 'string') {
+            alert('Invalid note file format. Missing or invalid code content.');
+            return;
+          }
+
+          // Optionally restore the theme if saved (do this before loading code)
+          const validThemes = ['auto', 'latte', 'frappe', 'macchiato', 'mocha'];
+          if (note.theme && validThemes.includes(note.theme) && note.theme !== currentTheme) {
+            setTheme(note.theme);
+          }
+
+          // If there's an editor, load the code into it
+          // Note: Currently only supports single cell - saves/loads first editor only
+          if (editors.length > 0 && editors[0]) {
+            editors[0].setValue(note.code);
+            editors[0].focus();
+            
+            // Clear the output of the first cell
+            const firstCell = document.querySelector('.cell');
+            if (firstCell) {
+              const output = firstCell.querySelector('.output');
+              if (output) {
+                output.textContent = '';
+              }
+            }
+            
+            console.log('Note loaded successfully from:', file.name);
+          } else {
+            // If no editor exists, create one with the loaded code
+            // The addCell function will handle editor creation and initialization
+            addCell(note.code);
+            console.log('Note loaded successfully from:', file.name);
+          }
+          
+        } catch (error) {
+          console.error('Error parsing note file:', error);
+          alert('Failed to load note. The file may be corrupted or in an invalid format.');
+        }
+      };
+      
+      reader.onerror = function() {
+        alert('Failed to read the file. Please try again.');
+      };
+      
+      reader.readAsText(file);
+      
+      // Reset the file input so the same file can be loaded again if needed
+      event.target.value = '';
     }
 
     // Initialize theme and then load content
