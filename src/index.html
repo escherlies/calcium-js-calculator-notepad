@@ -714,8 +714,8 @@
       </div> -->
 
       <div style="margin-bottom: 16px; display: flex; gap: 12px;">
-        <button type="button" onclick="saveNote()">💾 Save Note</button>
-        <button type="button" onclick="loadNote()">📂 Load Note</button>
+        <button type="button" onclick="saveNote()" aria-label="Save note to file">💾 Save Note</button>
+        <button type="button" onclick="loadNote()" aria-label="Load note from file">📂 Load Note</button>
         <input type="file" id="file-input" accept=".json" style="display: none;" onchange="handleFileLoad(event)">
       </div>
 
@@ -1380,7 +1380,7 @@
     // Function to save the current note
     function saveNote() {
       if (editors.length === 0 || !editors[0]) {
-        alert('No note to save. Please write some code first.');
+        alert('No editor available. Please wait for the editor to load.');
         return;
       }
 
@@ -1434,8 +1434,8 @@
         return;
       }
 
-      // Check if it's a JSON file
-      if (!file.name.endsWith('.json')) {
+      // Validate file type (both extension and MIME type)
+      if (!file.name.endsWith('.json') || file.type !== 'application/json') {
         alert('Please select a valid JSON note file.');
         return;
       }
@@ -1446,9 +1446,9 @@
         try {
           const note = JSON.parse(e.target.result);
           
-          // Validate the note structure
-          if (!note.code) {
-            alert('Invalid note file format. Missing code content.');
+          // Validate the note structure and types
+          if (!note.code || typeof note.code !== 'string') {
+            alert('Invalid note file format. Missing or invalid code content.');
             return;
           }
 
