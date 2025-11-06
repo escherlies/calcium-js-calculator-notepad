@@ -716,7 +716,7 @@
       <div style="margin-bottom: 16px; display: flex; gap: 12px;">
         <button type="button" onclick="saveNote()" aria-label="Save note to file">💾 Save Note</button>
         <button type="button" onclick="loadNote()" aria-label="Load note from file">📂 Load Note</button>
-        <input type="file" id="file-input" accept=".json" style="display: none;" onchange="handleFileLoad(event)">
+        <input type="file" id="file-input" accept=".json" aria-label="Select note file to load" style="display: none;" onchange="handleFileLoad(event)">
       </div>
 
       <div id="notebook" style="margin-top: 24px;"></div>
