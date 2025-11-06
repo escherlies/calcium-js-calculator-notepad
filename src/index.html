@@ -1434,8 +1434,10 @@
         return;
       }
 
-      // Validate file type (both extension and MIME type)
-      if (!file.name.endsWith('.json') || file.type !== 'application/json') {
+      // Validate file type (extension and optionally MIME type)
+      // Note: MIME type can vary across systems, so we check for common types
+      const validMimeTypes = ['application/json', 'text/plain', ''];
+      if (!file.name.endsWith('.json') || !validMimeTypes.includes(file.type)) {
         alert('Please select a valid JSON note file.');
         return;
       }
@@ -1459,11 +1461,12 @@
           }
 
           // If there's an editor, load the code into it
+          // Note: Currently only supports single cell - saves/loads first editor only
           if (editors.length > 0 && editors[0]) {
             editors[0].setValue(note.code);
             editors[0].focus();
             
-            // Clear the output
+            // Clear the output of the first cell
             const firstCell = document.querySelector('.cell');
             if (firstCell) {
               const output = firstCell.querySelector('.output');
