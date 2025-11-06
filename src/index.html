@@ -714,8 +714,8 @@
       </div> -->
 
       <div style="margin-bottom: 16px; display: flex; gap: 12px;">
-        <button onclick="saveNote()">💾 Save Note</button>
-        <button onclick="loadNote()">📂 Load Note</button>
+        <button type="button" onclick="saveNote()">💾 Save Note</button>
+        <button type="button" onclick="loadNote()">📂 Load Note</button>
         <input type="file" id="file-input" accept=".json" style="display: none;" onchange="handleFileLoad(event)">
       </div>
 
@@ -1452,6 +1452,11 @@
             return;
           }
 
+          // Optionally restore the theme if saved (do this before loading code)
+          if (note.theme && note.theme !== currentTheme) {
+            setTheme(note.theme);
+          }
+
           // If there's an editor, load the code into it
           if (editors.length > 0 && editors[0]) {
             editors[0].setValue(note.code);
@@ -1464,11 +1469,6 @@
               if (output) {
                 output.textContent = '';
               }
-            }
-            
-            // Optionally restore the theme if saved
-            if (note.theme && note.theme !== currentTheme) {
-              setTheme(note.theme);
             }
             
             console.log('Note loaded successfully from:', file.name);
